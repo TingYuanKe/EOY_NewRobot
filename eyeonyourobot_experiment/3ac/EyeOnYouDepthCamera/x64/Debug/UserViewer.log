@@ -1,0 +1,102 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (UserViewer.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+cl : Command line warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
+  VotingPID.cpp
+  Viewer.cpp
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocketrunpid.h(6): warning C4005: 'DEFAULT_PORT_STR': macro redefinition
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocket.h(6): note: see previous definition of 'DEFAULT_PORT_STR'
+c:\opencv\build\include\opencv2\core\mat.hpp(2586): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp(592): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(94): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(346): note: see declaration of 'strncpy'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(217): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(218): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(219): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(221): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(230): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(231): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(284): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(292): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(302): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(305): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(308): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(315): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(472): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(473): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(474): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(475): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(476): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(506): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(519): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(726): warning C4101: 'y': unreferenced local variable
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(726): warning C4101: 'x': unreferenced local variable
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\viewer.cpp(1125): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  stdafx.cpp
+  SocketSender.cpp
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocketrunpid.h(6): warning C4005: 'DEFAULT_PORT_STR': macro redefinition
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocket.h(6): note: see previous definition of 'DEFAULT_PORT_STR'
+c:\opencv\build\include\opencv2\core\mat.hpp(2586): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp(592): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\socketsender.cpp(30): warning C4477: 'sprintf_s' : format string '%i' requires an argument of type 'int', but variadic argument 1 has type 'SIZE_T'
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\socketsender.cpp(30): note: consider using '%lli' in the format string
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\socketsender.cpp(30): note: consider using '%Ii' in the format string
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\socketsender.cpp(30): note: consider using '%I64i' in the format string
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\socketsender.cpp(76): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  SocketListener.cpp
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocketrunpid.h(6): warning C4005: 'DEFAULT_PORT_STR': macro redefinition
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocket.h(6): note: see previous definition of 'DEFAULT_PORT_STR'
+c:\opencv\build\include\opencv2\core\mat.hpp(2586): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp(592): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+  ServerSocketRunPID.cpp
+  ServerSocket.cpp
+  RobotDrive.cpp
+  PIDRun.cpp
+  main.cpp
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocketrunpid.h(6): warning C4005: 'DEFAULT_PORT_STR': macro redefinition
+  c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\serversocket.h(6): note: see previous definition of 'DEFAULT_PORT_STR'
+c:\opencv\build\include\opencv2\core\mat.hpp(2586): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\persistence.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\core\utility.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp : warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+c:\opencv\build\include\opencv2\imgproc.hpp(592): warning C4819: The file contains a character that cannot be represented in the current code page (950). Save the file in Unicode format to prevent data loss
+  CThread.cpp
+  ColorMemory.cpp
+c:\users\richard yi-chia tsai\desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\eyeonyoudepthcamera\colormemory.cpp(64): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  UserViewer.vcxproj -> C:\Users\Richard Yi-Chia TSAI\Desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\EyeOnYouDepthCamera\x64\Debug\EyeOnYouSensing.exe
+  UserViewer.vcxproj -> C:\Users\Richard Yi-Chia TSAI\Desktop\hscctsaiandke\eyeonyourobot_experiment\3ac\EyeOnYouDepthCamera\x64\Debug\EyeOnYouSensing.pdb (Full PDB)
+  已複製 0 個檔案
+  已複製 0 個檔案
+  已複製 0 個檔案

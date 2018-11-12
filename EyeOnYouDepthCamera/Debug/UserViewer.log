@@ -1,0 +1,27 @@
+﻿cl : Command line warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
+  Viewer.cpp
+  main.cpp
+  Generating Code...
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniInitialize referenced in function "public: static enum openni::Status __cdecl openni::OpenNI::initialize(void)" (?initialize@OpenNI@openni@@SA?AW4Status@2@XZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniShutdown referenced in function "public: static void __cdecl openni::OpenNI::shutdown(void)" (?shutdown@OpenNI@openni@@SAXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniGetExtendedError referenced in function "public: static char const * __cdecl openni::OpenNI::getExtendedError(void)" (?getExtendedError@OpenNI@openni@@SAPBDXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniDeviceOpen referenced in function "public: enum openni::Status __thiscall openni::Device::open(char const *)" (?open@Device@openni@@QAE?AW4Status@2@PBD@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniDeviceClose referenced in function "public: void __thiscall openni::Device::close(void)" (?close@Device@openni@@QAEXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniDeviceGetInfo referenced in function "private: enum openni::Status __thiscall openni::Device::_setHandle(struct _OniDevice *)" (?_setHandle@Device@openni@@AAE?AW4Status@2@PAU_OniDevice@@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniDeviceIsPropertySupported referenced in function "public: bool __thiscall openni::Device::isPropertySupported(int)const " (?isPropertySupported@Device@openni@@QBE_NH@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniDeviceIsCommandSupported referenced in function "public: bool __thiscall openni::Device::isCommandSupported(int)const " (?isCommandSupported@Device@openni@@QBE_NH@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniFrameAddRef referenced in function "public: void __thiscall openni::VideoFrameRef::_setFrame(struct OniFrame *)" (?_setFrame@VideoFrameRef@openni@@QAEXPAUOniFrame@@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__oniFrameRelease referenced in function "public: void __thiscall openni::VideoFrameRef::release(void)" (?release@VideoFrameRef@openni@@QAEXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteInitialize referenced in function "public: static enum nite::Status __cdecl nite::NiTE::initialize(void)" (?initialize@NiTE@nite@@SA?AW4Status@2@XZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteShutdown referenced in function "public: static void __cdecl nite::NiTE::shutdown(void)" (?shutdown@NiTE@nite@@SAXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteInitializeUserTracker referenced in function "public: enum nite::Status __thiscall nite::UserTracker::create(class openni::Device *)" (?create@UserTracker@nite@@QAE?AW4Status@2@PAVDevice@openni@@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteInitializeUserTrackerByDevice referenced in function "public: enum nite::Status __thiscall nite::UserTracker::create(class openni::Device *)" (?create@UserTracker@nite@@QAE?AW4Status@2@PAVDevice@openni@@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteShutdownUserTracker referenced in function "public: void __thiscall nite::UserTracker::destroy(void)" (?destroy@UserTracker@nite@@QAEXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteStartSkeletonTracking referenced in function "public: enum nite::Status __thiscall nite::UserTracker::startSkeletonTracking(short)" (?startSkeletonTracking@UserTracker@nite@@QAE?AW4Status@2@F@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteStartPoseDetection referenced in function "public: enum nite::Status __thiscall nite::UserTracker::startPoseDetection(short,enum nite::PoseType)" (?startPoseDetection@UserTracker@nite@@QAE?AW4Status@2@FW4PoseType@2@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteReadUserTrackerFrame referenced in function "public: enum nite::Status __thiscall nite::UserTracker::readFrame(class nite::UserTrackerFrameRef *)" (?readFrame@UserTracker@nite@@QAE?AW4Status@2@PAVUserTrackerFrameRef@2@@Z)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteUserTrackerFrameRelease referenced in function "public: void __thiscall nite::UserTrackerFrameRef::release(void)" (?release@UserTrackerFrameRef@nite@@QAEXXZ)
+Viewer.obj : error LNK2019: unresolved external symbol __imp__niteConvertJointCoordinatesToDepth referenced in function "public: enum nite::Status __thiscall nite::UserTracker::convertJointCoordinatesToDepth(float,float,float,float *,float *)const " (?convertJointCoordinatesToDepth@UserTracker@nite@@QBE?AW4Status@2@MMMPAM0@Z)
+C:\Program Files\PrimeSense\NiTE2\Lib\\NiTE2.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'X86'
+C:\Program Files\OpenNI2\Lib\\OpenNI2.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'X86'
+C:\Program Files\PrimeSense\NiTE2\Samples\UserViewer\Debug\UserViewer.exe : fatal error LNK1120: 20 unresolved externals
