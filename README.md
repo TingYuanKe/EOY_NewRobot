@@ -1,4 +1,4 @@
-"# EOY_NewRobot" 
+# EOY_NewRobot 
 
 This project is build for AI demo in NCTU.
 
