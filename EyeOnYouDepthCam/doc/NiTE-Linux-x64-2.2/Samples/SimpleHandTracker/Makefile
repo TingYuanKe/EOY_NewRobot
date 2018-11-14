@@ -1,4 +1,4 @@
-include CommonDefs.mak
+include ../CommonDefs.mak
 
 BIN_DIR = Bin
 
@@ -17,4 +17,4 @@ EXE_NAME = SimpleHandTracker
 
 CFLAGS += -Wall
 
-include CommonCppMakefile
+include ../CommonCppMakefile
