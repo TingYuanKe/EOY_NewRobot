@@ -1,8 +1,10 @@
 package eyeonyouserver;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Enumeration;
 
 
 public class MainActivity {
@@ -16,6 +18,20 @@ public class MainActivity {
 	// FIle recieve folder
 	
 	public static void main(String[] args) throws IOException{
+		
+		Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+		for (; n.hasMoreElements();)
+        {
+                NetworkInterface e = n.nextElement();
+                System.out.println("Interface: " + e.getName());
+                Enumeration<InetAddress> a = e.getInetAddresses();
+                for (; a.hasMoreElements();)
+                {
+                        InetAddress addr = a.nextElement();
+                        System.out.println("  " + addr.getHostAddress());
+                }
+        }
+		
 		try{
 			//showing IP
 			servsock = new MainServerSocket(SOCKET_PORT);
