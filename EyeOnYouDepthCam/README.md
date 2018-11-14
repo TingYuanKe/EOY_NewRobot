@@ -1,22 +1,56 @@
 # EOYDepthCam
 This module is for Robot depth camera, skeleton sensing, histogram sensin,  socket clinet IPC, PID command and robot tracking.
 
+### Package
+* OpenNi2
+* NiTE2
+* ROS
+
 **IMU data folder **: ~/Data/IMUdata
 
 ## Installation
 
 ### 1. Install ROS-kinectic
+**Setup sources.lst**
+
+```
+$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+```
 
 **Setup keys**
+```
+$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+```
+**installation**
+```
+$ sudo apt-get update
+$ sudo apt-get install ros-kinetic-desktop
 
-installation
+$ sudo apt-get install python-rosdep
+$ sudo rosdep init
+$ rosdep update
 
-Setup bashrc for ROS
+$ echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+$ source ~/.bashrc
+```
 
-Create ROS workspace
+**Setup bashrc for ROS**
+```
+$ Add to .bashrc: source /opt/ros/kinetic/setup.bash
+```
+**Create ROS workspace**
+```
+$ mkdir -p ~/catkin_ws/src
+$ cd ~/catkin_ws/src
+$ catkin_init_workspace
+$ cd ~/catkin_ws/
+$ catkin_make
+```
 
-Setup bashrc for ROS workspace
-
+**Setup bashrc for ROS workspace**
+```
+$ Add to .bashrc: source ~/catkin_ws/devel/setup.bash
+```
 
 ### 2. OpenNI2
 First, Install** libsusb-1.0 ** and all the package you need.
@@ -37,7 +71,7 @@ $ git clone https://github.com/occipital/OpenNI2.git
 $ cd [dir-to-OpenNI2]
 $ make
 $ cd [dir-to-OpenNI2]/Bin/x64-Release
-$ sudo ./NiViewer   （没有sudo会导致找不到USB driver）
+$ sudo ./NiViewer
 ```
 open ./Niviewer to make sure you have successfully installed
 
