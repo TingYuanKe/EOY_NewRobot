@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class FileRecieveThread extends Thread {
-	String rootDir = "~/Data";
+	String rootDir = "/home/newrobot/data";
 	protected final static int FILE_SIZE = 1024 * 1024;
 	byte[] mybytearray = new byte[FILE_SIZE];
 	protected String whoSent;

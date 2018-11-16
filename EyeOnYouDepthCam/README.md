@@ -4,6 +4,7 @@ This module is for Robot depth camera, skeleton sensing, histogram sensin,  sock
 ### Package
 * OpenNi2
 * NiTE2
+* OpenCV2
 * ROS
 
 **IMU data folder **: ~/Data/IMUdata
@@ -83,7 +84,7 @@ $ sudo cp libOpenNI2.jni.so libOpenNI2.so /usr/lib
 $ sudo cp -r OpenNI2 /usr/lib
 $ ldconfig
 ```
-
+s
 
 ### 3. Install NiTE2
 
@@ -116,11 +117,13 @@ $ sudo cp -r NiTE2 /usr/lib
 $ ldconfig
 ```
 
-### 4. skeleton tracker via ROS
+### 4. Install OpenCV2
+
+### (). skeleton tracker via ROS
 [參考資料](https://blog.csdn.net/youngpan1101/article/details/71118170) 
 
 
-### 5. NiTE project build flow
+### (). NiTE project build flow
 [參考資料](https://github.com/keetsky/NiTE-2.0.0)
 
 
