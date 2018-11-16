@@ -1,4 +1,4 @@
-include ../CommonDefs.mak
+include CommonDefs.mak
 
 BIN_DIR = Bin
 
@@ -24,6 +24,6 @@ USED_LIBS += OpenNI2 NiTE2
 
 EXE_NAME = UserViewer
 
-CFLAGS += -Wall
+CFLAGS += -Wall -Werror
 
-include ../CommonCppMakefile
+include CommonCppMakefile

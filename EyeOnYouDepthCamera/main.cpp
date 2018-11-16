@@ -23,7 +23,8 @@ int main(int argc, char** argv)
 		WaitForSocket--;
 		Sleep(1000);
 	}
-
+	
+	// ****************Init Openni and Nite***********************
 	openni::Status rc = openni::STATUS_OK;
 
 	openni::Device device;

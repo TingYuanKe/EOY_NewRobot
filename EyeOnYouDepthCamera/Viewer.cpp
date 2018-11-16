@@ -732,6 +732,7 @@ void GetResultOfPID()
 
 		PIDRun::setKeepSkeleton(false);
 		PIDRun::setExecutePID(true);
+		
 		csvfile.open(csvfilename);
 	}
 

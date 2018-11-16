@@ -1,12 +1,15 @@
 package eyeonyouserver;
 import java.io.IOException;
 
+
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 import eyeonyouserver.SocketClientWithSensing;
 import pairing.PID;
@@ -25,9 +28,12 @@ public class MainServerSocket {
 	public int collectInterval = 4000;
 	public int pairingInterval =1000;
 	
-	public MainServerSocket(int port) throws IOException {
+	public MainServerSocket(InetAddress ip, int back_log, int port) throws IOException {
+		
+		
 		this.port = port;
-		this.servsock = new ServerSocket(port);
+		this.servsock = new ServerSocket(port,back_log,ip);
+
 		isConnected=true;
 		System.out.println("EyeOnYouServer starts!");
 	}
@@ -50,7 +56,7 @@ public class MainServerSocket {
 			 }, 500+collectInterval+pairingInterval, collectInterval);
 		 
 		ExecutorService executor = Executors.newFixedThreadPool(5);
-		while (true)// ¥Ã»·°õ¦æ
+		while (true)// ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
 			Socket sock = null;
 			try {
