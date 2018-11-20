@@ -50,8 +50,7 @@ int g_nXRes = 0, g_nYRes = 0;
 const int g_poseTimeoutToExit = 2000;
 
 // Global Time
-char time_str[13];
-SYSTEMTIME st;
+char time_str[13]; 
 
 // File output stream
 ofstream csvfile;
