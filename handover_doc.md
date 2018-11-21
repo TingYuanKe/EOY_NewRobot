@@ -3,7 +3,7 @@
 ## EyeOnYouDepthCamera
 
 ### Keyword command
-
+ 
 * s : Draw skeleton
 * l : Draw user status label
 * c : Draw center of mass
