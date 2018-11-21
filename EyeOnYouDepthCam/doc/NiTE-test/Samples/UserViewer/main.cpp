@@ -7,14 +7,8 @@
 
 #include "Viewer.h"
 
-/***
-* Here We init 2 serversockt and EoyViewer
-*
-*   EoyViewer:
-*
-*   runPID Server: 
-*
-**/
+// Socket Define
+unsigned long RunPIDThreadFunc(void* data);
 
 int main(int argc, char** argv)
 {
@@ -23,6 +17,7 @@ int main(int argc, char** argv)
 
 	//****************Init Openni and Nite***********************
 	openni::Status rc = openni::STATUS_OK;
+	
 	openni::Device device;
 	openni::VideoStream depth, color;
 	const char* deviceURI = openni::ANY_DEVICE;
@@ -92,4 +87,16 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	EoyViewer.Run();
+}
+
+unsigned long RunPIDThreadFunc(void* data) {
+	cout << "Native ServerSocketRunPID server starting" << endl;
+
+	// Start server socket listener
+	ServerSocketRunPID* server = new ServerSocketRunPID();
+	server->startThread();
+
+	// Wait for server socket to terminate
+	WaitForSingleObject(server->getThread(), INFINITE);
+	return 0;
 }
