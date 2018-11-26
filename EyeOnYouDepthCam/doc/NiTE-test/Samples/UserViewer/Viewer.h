@@ -11,7 +11,7 @@
 #include "OpenNI.h"
 #include "NiTE.h"
 
-#include <thread>
+
 #include <math.h>
 #include <iostream>
 #include <fstream>
@@ -23,9 +23,13 @@
 #include <cstdio>
 #include <ctime>
 
+
+// Socket library
+
+
 // Socket Server Header
 //#include "ServerSocket.h"
-#include "ServerSocketRunPID.h"
+//#include "ServerSocketRunPID.h"
 
 // // OpenCV Header
 // #include <opencv2/core.hpp>

@@ -8,7 +8,7 @@
 #include "Viewer.h"
 
 // Socket Define
-unsigned long RunPIDThreadFunc(void* data);
+//unsigned long RunPIDThreadFunc(void* data);
 
 int main(int argc, char** argv)
 {
@@ -89,14 +89,14 @@ int main(int argc, char** argv)
 	EoyViewer.Run();
 }
 
-unsigned long RunPIDThreadFunc(void* data) {
-	cout << "Native ServerSocketRunPID server starting" << endl;
+// unsigned long RunPIDThreadFunc(void* data) {
+// 	cout << "Native ServerSocketRunPID server starting" << endl;
 
-	// Start server socket listener
-	ServerSocketRunPID* server = new ServerSocketRunPID();
-	server->startThread();
+// 	// Start server socket listener
+// 	ServerSocketRunPID* server = new ServerSocketRunPID();
+// 	server->startThread();
 
-	// Wait for server socket to terminate
-	WaitForSingleObject(server->getThread(), INFINITE);
-	return 0;
-}
+// 	// Wait for server socket to terminate
+// 	(*(server->getThread())).join();
+// 	return 0;
+// }
