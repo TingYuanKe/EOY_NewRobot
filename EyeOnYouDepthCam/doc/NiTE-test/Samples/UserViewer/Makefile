@@ -28,5 +28,9 @@ CFLAGS += -Wall
 # TingYuan: compile with c++ to support <thread.h>
 CFLAGS += -std=c++11
 
+# ChihHsiang: compile with c++ to support <pthread.h>
+LDFLAGS += -lpthread
+
+
 include ../BuildSystem/CommonCppMakefile
 	
