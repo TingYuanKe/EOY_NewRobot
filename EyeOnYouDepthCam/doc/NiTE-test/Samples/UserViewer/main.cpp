@@ -6,14 +6,22 @@
 *******************************************************************************/
 
 #include "Viewer.h"
+#include <pthread.h>
 
 // Socket Define
-//unsigned long RunPIDThreadFunc(void* data);
+void* RunPIDThreadFunc(void* data);
 
 int main(int argc, char** argv)
 {
-	//*******TODO PID server and ROS server
-
+	//PID server
+	pthread_t threadServer;
+	pthread_create(&threadServer,NULL,RunPIDThreadFunc,NULL);
+	int WaitForSocket = 1;
+	while (WaitForSocket > 0) {
+		cout << WaitForSocket << endl;
+		WaitForSocket--;
+		sleep(1);
+	}
 
 	//****************Init Openni and Nite***********************
 	openni::Status rc = openni::STATUS_OK;
@@ -89,14 +97,19 @@ int main(int argc, char** argv)
 	EoyViewer.Run();
 }
 
-// unsigned long RunPIDThreadFunc(void* data) {
-// 	cout << "Native ServerSocketRunPID server starting" << endl;
+void* RunPIDThreadFunc(void* data) {
+	cout << "Native ServerSocketRunPID server starting" << endl;
 
-// 	// Start server socket listener
-// 	ServerSocketRunPID* server = new ServerSocketRunPID();
-// 	server->startThread();
+	// Start server socket listener
+	ServerSocketRunPID* server = new ServerSocketRunPID();
+	server->startThread();
 
-// 	// Wait for server socket to terminate
-// 	(*(server->getThread())).join();
-// 	return 0;
-// }
+	// Wait for server socket to terminate
+	void* status;
+
+	if(pthread_join(server->getThread(),&status)){
+		printf("Failed to join thread\n");
+	}
+	
+	return 0;
+}
