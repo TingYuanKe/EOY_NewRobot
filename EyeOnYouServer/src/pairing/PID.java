@@ -58,15 +58,15 @@ public class PID {
 		
 		int framesOfSkeleton = 10000; // 80 samples within 5 seconds
 		int framesOfInnertial = 10000; // 500 samples wihtin 5 seconds
-		String rootDir = "C:/Users/Public/Data";
+		String rootDir = "/home/newrobot/data";
 		ArrayList<String> I_usersName = new ArrayList<String>();
 		ArrayList<Integer> S_skeletonsID = new ArrayList<Integer>();
 		
 		// Read VSFile.cvs to separate different users in VSFile
-		S_skeletonsID = BodyExtraction.bodyCount(rootDir + "/KINECTData/VSFile.csv");
+		S_skeletonsID = BodyExtraction.bodyCount(rootDir + "/SkeletonData/VSFile.csv");
 		for (int i = 0; i < S_skeletonsID.size(); i++) {
-			BodyExtraction.bodyWriter(rootDir + "/KINECTData/VSFile.csv", 
-					rootDir + "/KINECTData/VSFile_" + i + ".csv", S_skeletonsID.get(i));
+			BodyExtraction.bodyWriter(rootDir + "/SkeletonData/VSFile.csv", 
+					rootDir + "/SkeletonData/VSFile_" + i + ".csv", S_skeletonsID.get(i));
 		}
 		
 		// Read all inertial.txt from each UEs and accumulate file's name into I_userName
@@ -94,10 +94,10 @@ public class PID {
 		ArrayList<ArrayList<InertialAcc>> inertials_acc_set = new ArrayList<ArrayList<InertialAcc>>();
 		ArrayList<ArrayList<InertialGyro>> inertials_gyro_set = new ArrayList<ArrayList<InertialGyro>>();
 		for (int i = 0; i < S_skeletonsID.size(); i++) {
-			ArrayList<Skeleton> jointsKinect = ReadData.readKinect(rootDir + "/KINECTData/VSFile_" + i + ".csv");
+			ArrayList<Skeleton> jointsKinect = ReadData.readKinect(rootDir + "/SkeletonData/VSFile_" + i + ".csv");
 			skeletons_set.add(jointsKinect);
 			
-			int tempFramesOfSkeleton = ReadData.countFileLine(rootDir + "/KINECTData/VSFile_" + i + ".csv");
+			int tempFramesOfSkeleton = ReadData.countFileLine(rootDir + "/SkeletonData/VSFile_" + i + ".csv");
 			if (tempFramesOfSkeleton > collectSeconds*30*(8.0/10) && framesOfSkeleton > tempFramesOfSkeleton) {
 				framesOfSkeleton = tempFramesOfSkeleton;
 			}
@@ -192,7 +192,7 @@ public class PID {
 			
 		try {
 			String[] IDCoordinate = new String[S_skeletonsID.size() * 2 + 1];
-			CSVWriter cw = new CSVWriter(new FileWriter(rootDir + "/KINECTData/result.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER);  // CSVWriter cw = new CSVWriter(new FileWriter(rootDir + "/KINECTData/result.csv", true), ',', CSVWriter.NO_QUOTE_CHARACTER);
+			CSVWriter cw = new CSVWriter(new FileWriter(rootDir + "/SkeletonData/result.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER);  // CSVWriter cw = new CSVWriter(new FileWriter(rootDir + "/SkeletonData/result.csv", true), ',', CSVWriter.NO_QUOTE_CHARACTER);
 			if (confidenceOfSimilarity == 1)
 				IDCoordinate[0] = "1";
 			else if (confidenceOfSimilarity == 0)
