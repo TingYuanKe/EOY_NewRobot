@@ -32,6 +32,8 @@
 #include "ServerSocketRunPID.h"
 #include "PIDRun.h"
 #include "VotingPID.h"
+#include "ColorMemory.h"
+
 
 // // OpenCV Header
 #include <opencv2/core.hpp>

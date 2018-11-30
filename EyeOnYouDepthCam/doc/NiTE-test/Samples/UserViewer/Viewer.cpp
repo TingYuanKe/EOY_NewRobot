@@ -467,8 +467,6 @@ void GetResultOfPID()
 	// 1. csvfile.close();
 	if (PIDRun::getKeepSkeleton() == true)
 	{
-		//
-		cout << "Save csv buffer and call pairing";
 		// Save buffer file
 		csvfile.close();
 		// Create new file and from vsfile_Buffer.csv
@@ -520,6 +518,265 @@ void GetResultOfPID()
 		}
 		PIDRun::setTagProfile(false);
 	}
+}
+
+
+/* For histogram sensing */
+// float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
+// int colorCount = 3;
+
+//bool g_visibleUsers[MAX_USERS] = {false};
+//nite::SkeletonState g_skeletonStates[MAX_USERS] = {nite::SKELETON_NONE};
+//char g_userStatusLabels[MAX_USERS][100] = {{0}};
+char g_userNameLabels[MAX_USERS][100] = {{0}};
+char g_userNameLabelsByHist[MAX_USERS][100] = {{0}};
+bool g_userNameConfidence[MAX_USERS] = {false};
+char g_userColorNameLabels[MAX_USERS][100] = {{0}};
+int g_userColorHistogramLabels[MAX_USERS][125] = {0};
+
+//char g_generalMessage[100] = { 0 };
+
+
+#define USER_COLOR(msg) {\
+	sprintf(g_userColorNameLabels[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+
+#define USER_CONFIDENCE(msg) {\
+	g_userNameConfidence[userData.getId()] = msg;}
+
+#define USER_NAME(msg) {\
+	sprintf(g_userNameLabels[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+
+#define USER_NAME_HIST(msg) {\
+	sprintf(g_userNameLabelsByHist[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+
+
+
+void updateIdentity(const char *NAME, const bool CONFIDENCE, openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pUserTracker, const nite::UserData& userData, uint64_t ts)
+{
+	// combine string : ID : name
+	char str[80];
+	sprintf(str, "%d", userData.getId());
+	strcat(str, ": ");
+	strcat(str, NAME);
+
+	
+
+	USER_NAME(str);
+	USER_CONFIDENCE(CONFIDENCE);
+
+	// richardyctsai
+	if (g_userNameConfidence[userData.getId()] == true) {
+		if (strcmp(NAME, s_FollowingTarget) == 0) {
+			i_FollowingTarget = userData.getId();
+		}
+
+		strcat(str, "\n(Hist)");
+		USER_NAME_HIST(str);
+		
+		/*float clothPosX, clothPosY;
+		pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &clothPosX, &clothPosY);
+
+
+		if (arg_m_colorFrame.isValid()) {
+			const openni::RGB888Pixel* pImageRow = (const openni::RGB888Pixel*)arg_m_colorFrame.getData();
+			int idx = ((arg_m_colorFrame.getWidth() * (int)clothPosY + 1) + (int)clothPosX);
+			if (idx < 0)
+				idx = 0;
+
+			for (int i = 0; i < 125; i++)
+				g_userColorHistogramLabels[userData.getId()][i] = 0;
+			int squareLen = 30;
+			int colorInterval = 50;
+			int idxHist = idx - (arg_m_colorFrame.getWidth() * (squareLen / 2)) - (squareLen / 2);
+			for (int i = 0; i < squareLen; i++)
+			{
+				idxHist += (arg_m_colorFrame.getWidth() * i);
+				for (int j = 0; j < squareLen; j++) {
+					long tempidxHist = idxHist + j;
+					int rHist = pImageRow[tempidxHist].r / colorInterval;
+					int gHist = pImageRow[tempidxHist].g / colorInterval;
+					int bHist = pImageRow[tempidxHist].b / colorInterval;
+					if (rHist == 5)
+						rHist = 4;
+					if (gHist == 5)
+						gHist = 4;
+					if (bHist == 5)
+						bHist = 4;
+
+					int indexHist = rHist * 25 + gHist * 5 + bHist;
+
+					g_userColorHistogramLabels[userData.getId()][indexHist] += 1;
+				}
+			}
+		}*/
+	}
+
+	//for (int i = 0; i < 125; i++)
+	//	cout << g_userColorHistogramLabels[userData.getId()][i] << " ";
+	//cout << endl;
+}
+
+
+void DrawIdentity(nite::UserTracker* pUserTracker, const nite::UserData& userData)
+{
+	int color = userData.getId() % colorCount;
+	glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
+
+	const nite::SkeletonJoint& jointHead = userData.getSkeleton().getJoint(nite::JOINT_HEAD);
+	
+	float x, y;
+	pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &x, &y);
+	x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	char *msg = g_userNameLabels[userData.getId()];
+	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y-80);
+	glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	//float x, y;
+	//pUserTracker->convertJointCoordinatesToDepth(jointHead.getPosition().x, jointHead.getPosition().y, jointHead.getPosition().z, &x, &y);
+	//x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	//y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	//char *msg = g_userNameLabels[userData.getId()];
+	//glRasterPos2i(x-((strlen(msg)/2)*8),y-80);
+	//glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	//cout << "X: " << jointHead.getOrientation().x << "         Y:" << jointHead.getOrientation().y << "         Z:" << jointHead.getOrientation().z << endl;
+
+}
+
+
+void DrawIdentityByHist(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pUserTracker, const nite::UserData& userData)
+{
+	//// richardyctsai
+	//float clothPosX, clothPosY;
+	//pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &clothPosX, &clothPosY);
+
+	//int temp_userColorHistogramLabels[128] = { 0 };
+	//if (arg_m_colorFrame.isValid()) {
+	//	const openni::RGB888Pixel* pImageRow = (const openni::RGB888Pixel*)arg_m_colorFrame.getData();
+	//	int idx = ((arg_m_colorFrame.getWidth() * (int)clothPosY + 1) + (int)clothPosX);
+	//	if (idx < 0)
+	//		idx = 0;
+
+	//	int squareLen = 30;
+	//	int colorInterval = 100;
+	//	int idxHist = idx - (arg_m_colorFrame.getWidth() * (squareLen / 2)) - (squareLen / 2);
+	//	for (int i = 0; i < squareLen; i++)
+	//	{
+	//		idxHist += (arg_m_colorFrame.getWidth() * i);
+	//		for (int j = 0; j < squareLen; j++) {
+	//			int tempidxHist = idxHist + j;
+	//			int rHist = pImageRow[tempidxHist].r / colorInterval;
+	//			int gHist = pImageRow[tempidxHist].g / colorInterval;
+	//			int bHist = pImageRow[tempidxHist].b / colorInterval;
+
+	//			int indexHist = rHist * 9 + gHist * 3 + bHist;
+
+	//			temp_userColorHistogramLabels[indexHist] += 1;
+	//		}
+	//	}
+	//}
+
+	//int color = userData.getId() % colorCount;
+	//glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
+
+	//const nite::SkeletonJoint& jointHead = userData.getSkeleton().getJoint(nite::JOINT_HEAD);
+
+	//float x, y;
+	//pUserTracker->convertJointCoordinatesToDepth(jointHead.getPosition().x, jointHead.getPosition().y, jointHead.getPosition().z, &x, &y);
+	//x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	//y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	//char *msg;
+
+	//if (ColorMemory::identifyPersonByHist(temp_userColorHistogramLabels, g_userColorHistogramLabels[userData.getId()], 50) == true)
+	//	msg = g_userNameLabelsByHist[userData.getId()];
+	//else
+	//{
+	//	char str[80];
+	//	sprintf(str, "%d", userData.getId());
+	//	strcat(str, ": Unknown <-ByHist");
+	//	msg = str;
+	//}
+
+	//glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
+	//glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	int color = userData.getId() % colorCount;
+	glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
+
+	const nite::SkeletonJoint& jointHead = userData.getSkeleton().getJoint(nite::JOINT_HEAD);
+
+	float x, y;
+	pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &x, &y);
+	x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	char *msg = g_userNameLabelsByHist[userData.getId()];
+	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
+	glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	//float x, y;
+	//pUserTracker->convertJointCoordinatesToDepth(jointHead.getPosition().x, jointHead.getPosition().y, jointHead.getPosition().z, &x, &y);
+	//x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	//y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	//char *msg = g_userNameLabelsByHist[userData.getId()];
+	//glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
+	//glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+}
+
+
+void DrawUserColor(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pUserTracker, const nite::UserData& userData, uint64_t ts)
+{
+	// richardyctsai
+	float clothPosX, clothPosY;
+	pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &clothPosX, &clothPosY);
+
+	const nite::SkeletonJoint& jointLK = userData.getSkeleton().getJoint(nite::JOINT_LEFT_KNEE);
+	float PantsPosX, PantsPosY;
+	pUserTracker->convertJointCoordinatesToDepth(jointLK.getPosition().x, jointLK.getPosition().y, jointLK.getPosition().z, &PantsPosX, &PantsPosY);
+
+	const openni::RGB888Pixel* pImageRow = (const openni::RGB888Pixel*)arg_m_colorFrame.getData();
+	int idx = ((arg_m_colorFrame.getWidth() * (int)clothPosY + 1) + (int)clothPosX);
+	if (idx < 0)
+		idx = 0;
+	
+	int r = pImageRow[idx].r;
+	int g = pImageRow[idx].g;
+	int b = pImageRow[idx].b;
+
+	ColorMemory::setRGB(r, g, b);
+	float* hsl = ColorMemory::RGBToHSL();
+
+	char str[80];
+	sprintf(str, "%d", userData.getId());
+	strcat(str, ": ");
+	strcat(str, "Your Cloth's Color is ");
+	strcat(str, ColorMemory::ColorClassification().c_str());
+	USER_COLOR(str);
+
+	//cout << "rgb = ("
+	//	<< r << ","
+	//	<< g << ","
+	//	<< b << ")"
+	//	<< endl;
+
+	//cout << "hsl = ("
+	//	<< hsl[0] << ","
+	//	<< hsl[1] << ","
+	//	<< hsl[2] << ")"
+	//	<< endl;
+
+	int color = userData.getId() % colorCount;
+	glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
+
+	const nite::SkeletonJoint& jointHead = userData.getSkeleton().getJoint(nite::JOINT_HEAD);
+
+	float x, y;
+	pUserTracker->convertJointCoordinatesToDepth(jointHead.getPosition().x, jointHead.getPosition().y, jointHead.getPosition().z, &x, &y);
+	x *= GL_WIN_SIZE_X / (float)g_nXRes;
+	y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+	char *msg = g_userColorNameLabels[userData.getId()];
+	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y + 100);
+	glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
 }
 
 
@@ -703,11 +960,11 @@ void EoyViewer::Display()
 	{
 		const nite::UserData& user = users[i];
 
-		// TODO
-		//if (confidenceOfResult == 1)
-		//	updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), true, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
-		//else if (confidenceOfResult == 0)
-		//	updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), false, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
+		// TODO : draw name (after GetResultOfPID)
+		if (confidenceOfResult == 1)
+			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), true, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
+		else if (confidenceOfResult == 0)
+			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), false, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 
 		updateUserState(user, userTrackerFrame.getTimestamp());
 		if (user.isNew())
@@ -720,7 +977,18 @@ void EoyViewer::Display()
 			if (g_drawStatusLabel)
 			{
 				// TODO
-				DrawStatusLabel(m_pUserTracker, user);
+				//DrawStatusLabel(m_pUserTracker, user);
+				if (g_userNameConfidence[user.getId()] == true)
+				{
+					DrawIdentity(m_pUserTracker, user);
+					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
+				}	
+				else if (g_userNameConfidence[user.getId()] == false)
+				{
+					//DrawIdentity(m_pUserTracker, user);
+					DrawIdentityByHist(m_colorFrame, m_pUserTracker, user);
+					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
+				}
 
 			}
 			if (g_drawCenterOfMass)

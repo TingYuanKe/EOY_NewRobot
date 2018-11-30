@@ -59,7 +59,7 @@ public class SocketClientWithSensing {
                         return;
                     }
                     
-                    System.out.println("XML sent from C++: " + xml + "\n\n");
+                    System.out.println("XML ack from C++: " + xml + "\n");
                     // Listen runPID command sent from Sensing program because it finished preparing the VSFile.csv
                     if(xml.equals("runPID")) {
                     	(new Thread(new StartPairingThread())).start();;

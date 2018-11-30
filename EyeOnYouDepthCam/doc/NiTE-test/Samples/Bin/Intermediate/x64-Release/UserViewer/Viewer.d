@@ -230,7 +230,7 @@
  /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h \
  /usr/include/c++/5/bits/random.tcc /usr/include/c++/5/numeric \
- /usr/include/c++/5/bits/stl_numeric.h \
+ /usr/include/c++/5/bits/stl_numeric.h ColorMemory.h \
  /usr/local/include/opencv2/core.hpp \
  /usr/local/include/opencv2/core/core.hpp \
  /usr/local/include/opencv2/core/types_c.h \
@@ -860,6 +860,8 @@ VotingPID.h:
 /usr/include/c++/5/numeric:
 
 /usr/include/c++/5/bits/stl_numeric.h:
+
+ColorMemory.h:
 
 /usr/local/include/opencv2/core.hpp:
 

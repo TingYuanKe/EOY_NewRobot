@@ -45,13 +45,16 @@ public class MainServerSocket {
 			 @Override
 			 public void run() {
 				 isPairing = true;
+				 System.out.println("Inertial ack true");
 				 clientRunPID.requestKinectKeepSkeleton();
 				 }
 			 }, 500, collectInterval);
+
 		 timerEndPairing.scheduleAtFixedRate(new TimerTask() {
 			 @Override
 			 public void run() {
 				 isPairing = false;
+				 System.out.println("Inertial ack false");
 				 }
 			 }, 500+collectInterval+pairingInterval, collectInterval);
 		 

@@ -1,4 +1,6 @@
 package eyeonyouserver;
+
+
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -9,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class FileRecieveThread extends Thread {
+public class FileRecieveThread extends Thread  {
 	String rootDir = "/home/newrobot/data";
 	protected final static int FILE_SIZE = 1024 * 1024;
 	byte[] mybytearray = new byte[FILE_SIZE];
@@ -56,37 +58,40 @@ public class FileRecieveThread extends Thread {
 				int lenBuffer = 0;
 				while ((lenBuffer = dis.read(mybytearray)) > 0) {
 					bos.write(mybytearray, 0, lenBuffer);
-					0
 					if(MainServerSocket.isPairing == true) {
 						System.out.println("\n==========\n2. The EyeOnYouServer is collecting inertial data from UEs.\n==========\n");
 						while(MainServerSocket.isPairing == true) {
+							//duplicate xxx_buffer.csv to xxx.csv one time
 							if(fileCleaned == false){
+								//System.out.println("Start writing buffer");
 								bos.close();
 								fos.close();
-								
+
 								File f1 = new File(FILE_TO_RECEIVED);
 							    File f2 = new File(FILE_TO_PAIRING);
 							    InputStream in = new FileInputStream(f1);
 							    OutputStream out = new FileOutputStream(f2);
-							    
+
 							    byte[] buf = new byte[1024];
 							    int lenPairing;
-							    
+
 							    while ((lenPairing = in.read(buf)) > 0){
 							      out.write(buf, 0, lenPairing);
 							    }
 							    in.close();
 					            out.close();
-						      
+
 						      	fos = new FileOutputStream(FILE_TO_RECEIVED);
 						      	bos = new BufferedOutputStream(fos);
-						
+
 						        fileCleaned=true;
 							}
+							System.out.print(""); // pretend from stuck in while loop (非常奇怪的bug...)
 						}
+						//System.out.println(MainServerSocket.isPairing);
 					}
 					fileCleaned = false;
-					
+
 					System.out.println(Thread.currentThread().getName() + " -> " + whoSent + " is sending data.");
 				}
 			} while (dis.readLine() != null);
@@ -110,5 +115,9 @@ public class FileRecieveThread extends Thread {
 		fos.close();
 		dis.close();
 
+	}
+	public void nullfuc() throws IOException {
+		System.out.println(".");
+		return;
 	}
 }
