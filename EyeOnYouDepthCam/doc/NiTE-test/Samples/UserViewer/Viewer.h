@@ -30,14 +30,15 @@
 // Socket Server Header
 //#include "ServerSocket.h"
 #include "ServerSocketRunPID.h"
+#include "PIDRun.h"
+#include "VotingPID.h"
 
 // // OpenCV Header
-// #include <opencv2/core.hpp>
-// #include <opencv2/highgui.hpp>
-// #include <opencv2/imgproc.hpp>
-// #include <opencv2/imgproc/imgproc.hpp>
-//#include <highgui.h>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
+#include <opencv2/imgproc/imgproc.hpp>
 
 //?????
 #include <stdio.h>
@@ -64,6 +65,7 @@ public:
 
 	virtual openni::Status Init(int argc, char **argv);
 	virtual openni::Status Run();	//Does not return
+
 
 protected:
 	virtual void Display();

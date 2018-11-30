@@ -53,7 +53,7 @@ void SocketSender::sendHostnameResponse() {
 
 
 // TODO : PIDRun module
-/*
+
 void SocketSender::sendKinectKeepSkeletonResponse() {
 	char buffer[512];
 	buffer[0] = 0;
@@ -77,7 +77,7 @@ void SocketSender::sendKinectTagProfileResponse() {
 		// cout << "Successfully complete sending tagProfile result to EyeOnYouServer!" << endl;
 	}
 }
-*/
+
 
 void SocketSender::sendXMLToClient(char xml[]) {
 	// Send some XML to the client

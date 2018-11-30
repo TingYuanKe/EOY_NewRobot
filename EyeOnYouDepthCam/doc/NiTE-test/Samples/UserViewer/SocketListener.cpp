@@ -95,7 +95,7 @@ void SocketListener::HandleMessage(char* xml) {
 
 
 	// TODO : PIDRun module
-	/*
+	
 	if (strstri(xml, "GetKinectKeepSkeleton") != NULL) {
 		PIDRun::setKeepSkeleton(true);
 		// printf("Client sent GetKinectKeepSkeleton request message\n");
@@ -109,5 +109,5 @@ void SocketListener::HandleMessage(char* xml) {
 		//if (sender != NULL)
 		//	sender->sendKinectTagProfileResponse();
 	}
-	*/
+	
 }

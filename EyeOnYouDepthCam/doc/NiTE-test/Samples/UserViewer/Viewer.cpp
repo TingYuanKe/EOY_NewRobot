@@ -76,6 +76,8 @@ int RobotRGBImageCount = 0;
 clock_t previousTime;
 double wantedDuration = 1;
 double duration;
+
+
 //*********************************************************
 
 void EoyViewer::glutIdle()
@@ -107,12 +109,14 @@ EoyViewer::~EoyViewer()
 	ms_self = NULL;
 }
 
+
 void EoyViewer::Finalize()
 {
 	delete m_pUserTracker;
 	nite::NiTE::shutdown();
 	openni::OpenNI::shutdown();
 }
+
 
 openni::Status EoyViewer::Init(int argc, char **argv)
 {
@@ -160,6 +164,7 @@ openni::Status EoyViewer::Run()	//Does not return
 	return openni::STATUS_OK;
 }
 
+
 float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
 int colorCount = 3;
 
@@ -173,6 +178,7 @@ char g_generalMessage[100] = {0};
 #define USER_MESSAGE(msg) {\
 	sprintf(g_userStatusLabels[user.getId()], "%s", msg);\
 	printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, user.getId(), msg);}
+
 
 void updateUserState(const nite::UserData& user, uint64_t ts)
 {
@@ -215,6 +221,7 @@ void updateUserState(const nite::UserData& user, uint64_t ts)
 	}
 }
 
+
 #ifndef USE_GLES
 void glPrintString(void *font, const char *str)
 {
@@ -226,6 +233,8 @@ void glPrintString(void *font, const char *str)
 	}   
 }
 #endif
+
+
 void DrawStatusLabel(nite::UserTracker* pUserTracker, const nite::UserData& user)
 {
 	int color = user.getId() % colorCount;
@@ -239,6 +248,8 @@ void DrawStatusLabel(nite::UserTracker* pUserTracker, const nite::UserData& user
 	glRasterPos2i(x-((strlen(msg)/2)*8),y);
 	glPrintString(GLUT_BITMAP_HELVETICA_18, msg);
 }
+
+
 void DrawFrameId(int frameId)
 {
 	char buffer[80] = "";
@@ -247,6 +258,8 @@ void DrawFrameId(int frameId)
 	glRasterPos2i(20, 20);
 	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
 }
+
+
 void DrawCenterOfMass(nite::UserTracker* pUserTracker, const nite::UserData& user)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -260,8 +273,9 @@ void DrawCenterOfMass(nite::UserTracker* pUserTracker, const nite::UserData& use
 	glPointSize(8);
 	glVertexPointer(3, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_POINTS, 0, 1);
-
 }
+
+
 void DrawBoundingBox(const nite::UserData& user)
 {
 	glColor3f(1.0f, 1.0f, 1.0f);
@@ -340,6 +354,8 @@ void DrawLimb(nite::UserTracker* pUserTracker, const nite::SkeletonJoint& joint1
 	glVertexPointer(3, GL_FLOAT, 0, coordinates+3);
 	glDrawArrays(GL_POINTS, 0, 1);
 }
+
+
 void DrawSkeleton(nite::UserTracker* pUserTracker, const nite::UserData& userData)
 {
 	DrawLimb(pUserTracker, userData.getSkeleton().getJoint(nite::JOINT_HEAD), userData.getSkeleton().getJoint(nite::JOINT_NECK), userData.getId() % colorCount);
@@ -366,6 +382,144 @@ void DrawSkeleton(nite::UserTracker* pUserTracker, const nite::UserData& userDat
 
 	DrawLimb(pUserTracker, userData.getSkeleton().getJoint(nite::JOINT_RIGHT_HIP), userData.getSkeleton().getJoint(nite::JOINT_RIGHT_KNEE), userData.getId() % colorCount);
 	DrawLimb(pUserTracker, userData.getSkeleton().getJoint(nite::JOINT_RIGHT_KNEE), userData.getSkeleton().getJoint(nite::JOINT_RIGHT_FOOT), userData.getId() % colorCount);
+}
+
+
+// void DrawGlobalTime()
+// {
+// 	GetLocalTime(&st);
+// 	memset(time_str, '\0', 13);
+// 	sprintf_s(time_str, 13, "%02d:%02d:%02d:%03d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+
+// 	char buffer[80] = "";
+// 	sprintf(buffer, "%s", time_str);
+// 	glColor3f(0.0f, 0.0f, 1.0f);
+// 	glRasterPos2i(20, 40);
+// 	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
+
+// }
+typedef struct tm SYSTEMTIME;
+void GetLocalTime(SYSTEMTIME *st);
+
+void GetLocalTime(SYSTEMTIME *st) {
+    if (st)
+    {
+        struct tm *pst = NULL;
+        time_t t = time(NULL);
+        pst = localtime(&t);
+        memcpy(st,pst,sizeof(SYSTEMTIME));
+        st->tm_year += 1900;
+    }
+}
+
+
+void toEulerAngle(float w, float x, float y, float z, double& roll, double& pitch, double& yaw)
+{
+	// roll (x-axis rotation)
+	double sinr = +2.0 * (w * x + y * z);
+	double cosr = +1.0 - 2.0 * (x * x + y * y);
+	roll = atan2(sinr, cosr);
+
+	// pitch (y-axis rotation)
+	double sinp = +2.0 * (w * y - z * x);
+	if (fabs(sinp) >= 1)
+		pitch = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+	else
+		pitch = asin(sinp);
+
+	// yaw (z-axis rotation)
+	double siny = +2.0 * (w * z + x * y);
+	double cosy = +1.0 - 2.0 * (y * y + z * z);
+	yaw = atan2(siny, cosy);
+}
+
+
+void WriteSkeletonInfo(int ID, ofstream& csvout, const nite::UserData& userData, char* time_str)
+{
+	const nite::SkeletonJoint& WH_JointPos = userData.getSkeleton().getJoint(nite::JOINT_RIGHT_HAND);
+
+	const nite::SkeletonJoint& rJoint = userData.getSkeleton().getJoint(nite::JOINT_TORSO);
+	const nite::Quaternion& tr = rJoint.getOrientation();
+	double roll = 0;
+	double pitch = 0;
+	double yaw = 0;
+	toEulerAngle(tr.w, tr.x, tr.y, tr.z, roll, pitch, yaw);
+	if (roll < 0.02)
+		roll = 0;
+	if (pitch < 0.02)
+		pitch = 0;
+	if (yaw < 0.02)
+		yaw = 0;
+
+	//cout << roll << "  " << pitch  << "   " << yaw  << endl;
+	csvout << WH_JointPos.getPosition().x / 1000.0 << "," << WH_JointPos.getPosition().y / 1000.0 << "," << WH_JointPos.getPosition().z / 1000.0 << ","
+		<< roll << "," << pitch << "," << yaw << ","
+		<< ID << "," << time_str << "\n";
+
+	lastRoll = roll;
+	lastPitch = pitch;
+	lastYaw = yaw;
+}
+
+
+void GetResultOfPID()
+{
+	// 1. csvfile.close();
+	if (PIDRun::getKeepSkeleton() == true)
+	{
+		//
+		cout << "Save csv buffer and call pairing";
+		// Save buffer file
+		csvfile.close();
+		// Create new file and from vsfile_Buffer.csv
+		ifstream fin(csvfilename);
+		string csvfilenamepairing = "/home/newrobot/data/SkeletonData//VSFile.csv";
+		ofstream fout(csvfilenamepairing);
+		string line;
+		while (getline(fin, line)) fout << line << '\n';
+		//cout << "buffer complete!!!!!!!!!!!!!" << endl;
+
+		PIDRun::setKeepSkeleton(false);
+		PIDRun::setExecutePID(true);
+		
+		csvfile.open(csvfilename);
+	}
+
+	// Read result.csv to tag profile on top of the head
+	if (PIDRun::getTagProfile() == true) {
+		resultfile.open(resultfilename);
+		if (resultfile.is_open()) {
+			// read ID and position of head joint and then putText
+			getline(resultfile, line, '\n');
+			resultfile.close();
+		}
+		istringstream templine(line);
+		string data, nameReadFile;
+		double x, y;
+		int idx = 0;
+		while (getline(templine, data, ',')) {
+			if (idx == 0) {
+				if (data.compare("1") == 0)
+					confidenceOfResult = 1;
+				else if (data.compare("0") == 0)
+					confidenceOfResult = 0;
+
+				//confidenceOfResult = 1;
+				cout << "data.c_str(): " << data.c_str() << "  confidenceOfResult: " << confidenceOfResult << endl;
+			}
+			if (idx != 0 && idx % 2 == 1) {
+				VotingPID::setID(data.c_str());
+				cout << "id: " << data.c_str() << endl;
+			}
+			else if (idx != 0 && idx % 2 == 0) {
+				nameReadFile = data.c_str();
+				VotingPID::setnameVotingWithIndex(VotingPID::getID(), VotingPID::votingOfPID(VotingPID::getID(), nameReadFile));
+				cout << "name: " << data.c_str() << endl;
+			}
+			idx += 1;
+		}
+		PIDRun::setTagProfile(false);
+	}
 }
 
 
@@ -542,7 +696,7 @@ void EoyViewer::Display()
 
 	// TODO
 	// Read result.csv to tag profile on top of the head
-	// GetResultOfPID();
+	 GetResultOfPID();
 
 
 	for (int i = 0; i < users.getSize(); ++i)
@@ -584,7 +738,17 @@ void EoyViewer::Display()
 			{
 				DrawSkeleton(m_pUserTracker, user);
 
-				//TODO
+				/*TODO write skeleton csv*/
+				
+				//get system time
+				SYSTEMTIME st;
+				GetLocalTime(&st);
+				//memset(time_str, '\0', 13); //xx:xx:xx:xxx
+				//sprintf_s(time_str, 13, "%02d:%02d:%02d:%03d", st.tm_hour, st.tm_min, st.tm_sec, st.wMilliseconds);
+				memset(time_str, '\0', 9); //xx:xx:xx
+				snprintf(time_str, 9, "%02d:%02d:%02d", st.tm_hour, st.tm_min, st.tm_sec);
+				
+				WriteSkeletonInfo(user.getId(), csvfile, user, time_str);
 			}
 		}
 
@@ -623,6 +787,8 @@ void EoyViewer::Display()
 	if (g_drawFrameId)
 	{
 		DrawFrameId(userTrackerFrame.getFrameIndex());
+		//TODO: draw time
+		// DrawGlobalTime();
 	}
 
 	if (g_generalMessage[0] != '\0')

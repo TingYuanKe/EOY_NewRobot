@@ -8,7 +8,7 @@
 #include "Viewer.h"
 #include <pthread.h>
 
-// Socket Define
+// PID Server Socket thread 
 void* RunPIDThreadFunc(void* data);
 
 int main(int argc, char** argv)

@@ -56,7 +56,7 @@ public class FileRecieveThread extends Thread {
 				int lenBuffer = 0;
 				while ((lenBuffer = dis.read(mybytearray)) > 0) {
 					bos.write(mybytearray, 0, lenBuffer);
-					
+					0
 					if(MainServerSocket.isPairing == true) {
 						System.out.println("\n==========\n2. The EyeOnYouServer is collecting inertial data from UEs.\n==========\n");
 						while(MainServerSocket.isPairing == true) {
