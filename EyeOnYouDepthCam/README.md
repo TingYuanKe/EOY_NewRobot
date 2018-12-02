@@ -162,6 +162,22 @@ pkg-config --modversion opencv
 ### (). NiTE project build flow
 [參考資料](https://github.com/keetsky/NiTE-2.0.0)
 
+## gcc version update (optional)
+The default g++ version in ubuntu 16.04 is gcc version 5.4, but in this repo it needs g++ version greater than 7 for some case.
+```
+# install  add-apt-repository command
+sudo apt-get install software-properties-common
+
+# add repo of gcc/g++
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+
+# install g++-7
+sudo apt-get install g++-7
+sudo ln -s /usr/bin/g++-7 /usr/bin/g++ -f
+sudo ln -s /usr/bin/gcc-7 /usr/bin/gcc -f
+```
+
 ## Auto create ROS workspace and package
 ### ROSws.sh<span></span>
 **Usage :**
@@ -172,7 +188,8 @@ package_name : the name of the ROS package.
 
 Default path of workspace is at your $HOME, you can change it at variable $path in Line 17.
 
-**Description :**
+**Description :** 
+
 It would auto-create the catkin_ws, before creating a new workspace, it would remove the existed one.
 After creating package, it would copy the original CMakeLists.txt as CMakeLists.txt.orig to use for auto-create CMakeLists.txt in ROSmake.sh<span></span>.
 
@@ -195,7 +212,8 @@ Default OpenNI library path in repo is $RepoPath/EyeOnYouDepthCam/doc/OpenNI-Lin
 
 Default NiTE library path in repo is $RepoPath/EyeOnYouDepthCam/doc/NiTE-Linux-x64-2.2/Redist, you can change it at variable $NiTE_src in Line 13.
 
-**Description :**
+**Description :** 
+
 This script would auto copy src file and all necessary Include file from your repo to the ROS workspace, and auto create the CMakeLists.txt.
 After copying, it would auto-compile the package.
 
