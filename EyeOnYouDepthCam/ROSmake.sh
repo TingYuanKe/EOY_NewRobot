@@ -7,15 +7,14 @@ fi
 
 RepoPath=$1
 
-SrcPath="$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer"
-IncludePath="$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Include"
-OpenNI_src="$RepoPath/EyeOnYouDepthCam/doc/OpenNI-Linux-x64-2.2/Redist"
-NiTE_src="$RepoPath/EyeOnYouDepthCam/doc/NiTE-Linux-x64-2.2/Redist"
+SrcPath="$RepoPath/EyeOnYouDepthCam/exec/src"
+IncludePath="$RepoPath/EyeOnYouDepthCam/Include"
+OpenNI_src="$RepoPath/EyeOnYouDepthCam/lib/OpenNI-Linux-x64-2.2/Redist"
+NiTE_src="$RepoPath/EyeOnYouDepthCam/lib/NiTE-Linux-x64-2.2/Redist"
 
 package=$2
 
 workspace="$HOME/catkin_ws"
-#workspace="$HOME/tt/catkin_ws"
 workspace_IncludePath="$workspace/src/$package/include"
 
 
