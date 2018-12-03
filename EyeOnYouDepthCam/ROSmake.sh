@@ -17,33 +17,48 @@ package=$2
 workspace="$HOME/catkin_ws"
 workspace_IncludePath="$workspace/src/$package/include"
 
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+GREEN='\033[0;32m'
+
+
+echo "**************************************"
+echo "***  Copy Src/Include to workspace ***"
+echo "**************************************"
+
+# check package existed
+if [ ! -d "$workspace/src/$package" ];then
+	echo "${RED}Package not existed, please check your input package_name.${NC}"
+	exit
+fi
 
 # overrided src file
 cp "$SrcPath/"* "$workspace/src/$package/src"
-echo "Copy Src files to workspace successfully."
+echo "${GREEN}Copy Src files to workspace successfully."${NC}
 
 # check Include
 if [ ! -e "$workspace_IncludePath/OpenNI.h" ]; then
 	cp -R "$IncludePath/"* "$workspace_IncludePath"
-	echo "Copy Include header files successfully."
+	echo "${GREEN}Copy Include header files successfully.${NC}"
 fi
 
 # check NiTE2 dir
 if [ ! -d "$workspace/src/$package/NiTE2" ]; then
 	cp -R "$NiTE_src" "$workspace/src/$package/NiTE2"
-	echo "Copy NiTE library successfully."
+	echo "${GREEN}Copy NiTE library successfully.${NC}"
 fi
 
 # check openni dir
 if [ ! -d "$workspace/src/$package/OpenNI2" ]; then
 	cp -R "$OpenNI_src" "$workspace/src/$package/OpenNI2"
-	echo "Copy OpenNI library successfully."
+	echo "${GREEN}Copy OpenNI library successfully.${NC}"
 fi
 
 # edit CMakeList
+echo
 echo "Start to edit CMakeLists.txt."
 if [ ! -e "$workspace/src/$package/CMakeLists.txt.orig" ]; then
-	echo "CMakeLists.txt.orig does not exist, You need to edit it and compile by yourself."
+	echo "${RED}CMakeLists.txt.orig does not exist, You need to edit it and compile by yourself.${NC}"
 	exit
 else
 	# copy new CmakeList.txt
@@ -70,10 +85,20 @@ else
 	# add target_link_libraries
 	sed -i 's/against/against\ntarget_link_libraries(${PROJECT_NAME}_node\n  ${catkin_LIBRARIES}\n  ${OPENGL_LIBRARIES}\n  ${GLUT_LIBRARY}\n  OpenNI2\n  NiTE2\n)\n/' "$workspace/src/$package/CMakeLists.txt"
 
-	echo "Edit successfully."
+	echo "${GREEN}Edit successfully.${NC}"
 fi
 
-echo "Start to compile"
+# copy NiTE2 dir to catkin_ws for quickly use
+if [ ! -d "$workspace/NiTE2" ];then
+	cp -R "$workspace/src/$package/NiTE2/NiTE2" "$workspace"
+	echo "${GREEN}Copy NiTE2 directory to catkin_ws successfully.${NC}"
+fi
+
+echo
+echo "**************************************"
+echo "***       Start to compile         ***"
+echo "**************************************"
+
 cd $workspace
 catkin_make
 
