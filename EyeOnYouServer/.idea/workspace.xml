@@ -2,17 +2,179 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cae922fb-1a5b-44e7-ac11-a97982f13143" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/Viewer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/Viewer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Android-Arm/OniPlatformAndroid-Arm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Driver/OniDriverAPI.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Driver/OniDriverTypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Linux-Arm/OniPlatformLinux-Arm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Linux-x86/OniPlatformLinux-x86.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/MacOSX/OniPlatformMacOSX.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiTE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteCAPI.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteCEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteCTypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteSampleUtilities.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/NiteVersion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniCAPI.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniCEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniCProperties.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniCTypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniPlatform.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniProperties.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OniVersion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/OpenNI.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/PS1080.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/PSLink.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/PrimeSense.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Include/Win32/OniPlatformWin32.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/License/NITE License V03.rtf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/License/flann.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/NiTEDevEnvironment" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/Data/lbsdata.idx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/Data/lbsdata.lbd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/Data/lbsparam1.lbd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/Data/lbsparam2.lbd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/FeatureExtraction.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/HandAlgorithms.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/h.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/NiTE2/s.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/com.primesense.nite.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/libNiTE2.jni.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/libNiTE2.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Redist/readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/111UserViewer" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/HandViewer" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/TEST/TEST.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/TEST/TEST.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/CThread.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/CThread.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ColorMemory.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ColorMemory.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/PIDRun.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/PIDRun.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ServerSocket.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ServerSocket.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ServerSocketRunPID.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/ServerSocketRunPID.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/SocketListener.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/SocketListener.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/SocketSender.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/SocketSender.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/Viewer.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/Viewer.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/VotingPID.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/VotingPID.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/main.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/stdafx.d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/Intermediate/x64-Release/UserViewer/stdafx.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/NiTE.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/PS1080.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/PSLink.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/libOniFile.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/libPS1080.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/libPSLink.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/liborbbec.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/OpenNI2/Drivers/orbbec.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/PS1080.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/PSLink.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/SimpleUserTracker" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/TEST" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/UserViewer" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libNiTE2.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libOniFile.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libOpenNI2.jni.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libOpenNI2.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libPS1080.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/libPSLink.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/liborbbec.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/orbbec.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Bin/org.openni.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/CommonCSMakefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/CommonCppMakefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/CommonDefs.mak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/CommonJavaMakefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/CommonTargets.mak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/OpenNICommon.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/Platform.Arm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/Platform.x64" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/BuildSystem/Platform.x86" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/Common/NiteSampleUtilities.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/GL/GL/gl.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/GL/GL/glext.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/GL/GL/glui.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/GL/GL/glut.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/GL/GL/wglext.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/CThread.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/CThread.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/ColorMemory.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/ColorMemory.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/PIDRun.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/PIDRun.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/ServerSocketRunPID.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/ServerSocketRunPID.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/SocketListener.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/SocketListener.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/SocketSender.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/SocketSender.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/Viewer.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/Viewer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/VotingPID.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/VotingPID.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/stdafx.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/stdafx.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer/targetver.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/111Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeCache.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CMakeCCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CMakeCXXCompiler.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CMakeSystem.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CompilerIdC/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/2.8.12.2/CompilerIdCXX/a.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/CMakeOutput.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/Makefile.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/Makefile2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/TargetDirectories.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmake.check_cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/CXX.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/cmaketest.cpp.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/cmaketest.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeFiles/progress.marks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/NiTE.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/cmake_install.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/cmaketest" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/cmaketest/cmaketest.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/install.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/doc/NiTE-test/openni2_NITE2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiTE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteCAPI.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteCEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteCTypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteEnums.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteSampleUtilities.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/NiteVersion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/include/Viewer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EyeOnYouDepthCam/src/Viewer.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/FileRecieveThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/FileRecieveThread.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/MainServerSocket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/SocketClientWithSensing$Listener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/EyeOnYouServer/eyeonyouserver/SocketClientWithSensing$Listener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eyeonyouserver/FileRecieveThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/eyeonyouserver/FileRecieveThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eyeonyouserver/MainServerSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/eyeonyouserver/MainServerSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/eyeonyouserver/SocketClientWithSensing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/eyeonyouserver/SocketClientWithSensing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EyeOnYouiRobot/bin/.gitignore" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,8 +215,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/eyeonyouserver/FileRecieveThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="82" selection-start-line="81" selection-start-column="42" selection-end-line="82" />
+            <state relative-caret-position="151">
+              <caret line="100" column="20" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -101,8 +263,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -129,6 +289,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -182,7 +344,7 @@
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25538972" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25815368" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -191,7 +353,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.44200626" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44200626" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -248,8 +410,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/eyeonyouserver/FileRecieveThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="82" selection-start-line="81" selection-start-column="42" selection-end-line="82" />
+        <state relative-caret-position="151">
+          <caret line="100" column="20" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
         </state>
       </provider>
     </entry>

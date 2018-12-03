@@ -6,12 +6,15 @@ This module is for Robot depth camera, skeleton sensing, histogram sensin,  sock
 * NiTE2
 * OpenCV2
 * ROS
+* g++ version 7.0
 
-**IMU data folder **: ~/Data/IMUdata
+**Wearable sensor data folder**: ~/data/IMUdata
 
-## Installation
+**Depth camera data folder**: ~/data/SkeletonData
 
-### 1. Install ROS-kinectic
+## Install Instruction
+
+#### 1. Install ROS-kinectic
 **Setup sources.lst**
 
 ```
@@ -53,7 +56,7 @@ $ catkin_make
 $ Add to .bashrc: source ~/catkin_ws/devel/setup.bash
 ```
 
-### 2. OpenNI2
+#### 2. OpenNI2
 First, Install** libsusb-1.0 ** and all the package you need.
 
 ```
@@ -85,7 +88,7 @@ $ sudo cp -r OpenNI2 /usr/lib
 $ ldconfig
 ```
 
-### 3. Install NiTE2
+#### 3. Install NiTE2
 
  **usbutils**
 ```
@@ -116,9 +119,9 @@ $ sudo cp -r NiTE2 /usr/lib
 $ ldconfig
 ```
 
-### 4. Install OpenCV2
+#### 4. Install OpenCV2
 ```
-### Dependencies
+#### Dependencies
 sudo apt-get update
 sudo apt-get install -y build-essential cmake libgtk2.0-dev pkg-config \
                         python-numpy python-dev libavcodec-dev libavformat-dev \
@@ -176,10 +179,23 @@ sudo apt-get update
 sudo apt-get install g++-7
 sudo ln -s /usr/bin/g++-7 /usr/bin/g++ -f
 sudo ln -s /usr/bin/gcc-7 /usr/bin/gcc -f
+
+
 ```
 
+
+## Execution
+
+
+####1. Running with ROS
+
+####2. Running w/o ROS
+TODO
+~~You can build the project and excute it without ROS installation, Note that it didn't provide robot tracking function if u run this program without ROS.~~ 
+
+
 ## Auto create ROS workspace and package
-### ROSws.sh<span></span>
+#### ROSws.sh<span></span>
 **Usage :**
 ```
 ./ROSws.sh <package_name>
@@ -194,27 +210,27 @@ It would auto-create the catkin_ws, before creating a new workspace, it would re
 After creating package, it would copy the original CMakeLists.txt as CMakeLists.txt.orig to use for auto-create CMakeLists.txt in ROSmake.sh<span></span>.
 
 ## Auto copy src file and auto compile
-### ROSmake.sh<span></span>
+#### ROSmake.sh<span></span>
 **Usage :**
 ```
 ./ROSmake.sh <EOY_Repo_path> <package_name>"
 ```
-EOY_Repo_path : The path of the EOY repo which is download from github.
-package_name : The name of the ROS package.
+**EOY_Repo_path **: The path of the EOY repo which is download from github.
+_package_name_ : The name of the ROS package.
 
-Default path of workspace is at your $HOME/catkin_ws, you can change it at variable $workspace in Line 17.
+Default path of workspace is at your ```$HOME/catkin_ws```, you can change it at variable ```$workspace``` in Line 17.
 
-Default source code path in repo is $RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer, you can change it at variable $SrcPath in Line 10.
+Default source code path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer```, you can change it at variable ```$SrcPath```in Line 10.
 
-Default Include path in repo is $RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Include, you can change it at variable $IncludePath in Line 11.
+Default Include path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/``` Include, you can change it at variable ```$IncludePath``` in Line 11.
 
-Default OpenNI library path in repo is $RepoPath/EyeOnYouDepthCam/doc/OpenNI-Linux-x64-2.2/Redist, you can change it at variable $OpenNI_src in Line 12.
+Default OpenNI library path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/OpenNI-Linux-x64-2.2/Redist```, you can change it at variable ```$OpenNI_src``` in Line 12.
 
-Default NiTE library path in repo is $RepoPath/EyeOnYouDepthCam/doc/NiTE-Linux-x64-2.2/Redist, you can change it at variable $NiTE_src in Line 13.
+Default NiTE library path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-Linux-x64-2.2/Redist```, you can change it at variable $NiTE_src in Line 13.
 
-**Description :** 
+**Description :**
 
-This script would auto copy src file and all necessary Include file from your repo to the ROS workspace, and auto create the CMakeLists.txt.
+This script would auto copy src file and all necessary Include file from your repo to the ROS workspace, and auto create the **CMakeLists.txt.**
 After copying, it would auto-compile the package.
 
 
