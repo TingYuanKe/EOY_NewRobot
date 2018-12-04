@@ -12,6 +12,7 @@
 #endif
 
 #include "Viewer.h"
+#include "robot_control.h"
 
 #if (ONI_PLATFORM == ONI_PLATFORM_MACOSX)
         #include <GLUT/glut.h>
@@ -41,6 +42,7 @@ bool g_drawBoundingBox = false;
 bool g_drawBackground = true;
 bool g_drawDepth = true;
 bool g_drawFrameId = false;
+bool g_runRobotTracking = true;
 
 int g_nXRes = 0, g_nYRes = 0;
 
@@ -77,6 +79,10 @@ clock_t previousTime;
 double wantedDuration = 1;
 double duration;
 
+
+typedef struct tm SYSTEMTIME;
+void GetLocalTime(SYSTEMTIME *st);
+SYSTEMTIME st;
 
 //*********************************************************
 
@@ -115,6 +121,11 @@ void EoyViewer::Finalize()
 	delete m_pUserTracker;
 	nite::NiTE::shutdown();
 	openni::OpenNI::shutdown();
+}
+
+
+void rosInit(int argc, char** argv){
+	rosInit(argc, argv, "newrobot");
 }
 
 
@@ -385,22 +396,6 @@ void DrawSkeleton(nite::UserTracker* pUserTracker, const nite::UserData& userDat
 }
 
 
-// void DrawGlobalTime()
-// {
-// 	GetLocalTime(&st);
-// 	memset(time_str, '\0', 13);
-// 	sprintf_s(time_str, 13, "%02d:%02d:%02d:%03d", st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-
-// 	char buffer[80] = "";
-// 	sprintf(buffer, "%s", time_str);
-// 	glColor3f(0.0f, 0.0f, 1.0f);
-// 	glRasterPos2i(20, 40);
-// 	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
-
-// }
-typedef struct tm SYSTEMTIME;
-void GetLocalTime(SYSTEMTIME *st);
-
 void GetLocalTime(SYSTEMTIME *st) {
     if (st)
     {
@@ -410,6 +405,22 @@ void GetLocalTime(SYSTEMTIME *st) {
         memcpy(st,pst,sizeof(SYSTEMTIME));
         st->tm_year += 1900;
     }
+}
+
+
+void DrawSystemTime()
+{
+	SYSTEMTIME st;
+	GetLocalTime(&st);
+	memset(time_str, '\0', 13);
+	snprintf(time_str, 9, "%02d:%02d:%02d", st.tm_hour, st.tm_min, st.tm_sec);
+
+	char buffer[80] = "";
+	sprintf(buffer, "%s", time_str);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glRasterPos2i(20, 40);
+	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
+
 }
 
 
@@ -459,6 +470,158 @@ void WriteSkeletonInfo(int ID, ofstream& csvout, const nite::UserData& userData,
 	lastRoll = roll;
 	lastPitch = pitch;
 	lastYaw = yaw;
+}
+
+
+void StopRobotTracking()
+{
+	//forward speed down
+	if (LastMovingAction == 1) {
+		goForward();
+		setSpeed(RobotVelocity, RobotVelocity);
+		// RobotDrive::setDrivetowhere("forward");
+		// RobotDrive::setDriveunit(RobotVelocity);
+	}
+	//backward speed down
+	else if (LastMovingAction == 2) {
+		goBack();
+		setSpeed(RobotVelocity, RobotVelocity);
+		// RobotDrive::setDrivetowhere("backward");
+		// RobotDrive::setDriveunit(RobotVelocity);
+	}
+	//stop turn right
+	else if (LastMovingAction == 3) {
+		goForward();
+		setSpeed(RobotVelocity, RobotVelocity);
+	}
+	//stop turn left 
+	else if (LastMovingAction == 4) {
+		goForward();
+		setSpeed(RobotVelocity, RobotVelocity);
+	}
+	//stop spin right
+	else if (LastMovingAction == 5) {
+		spinRight();
+		setSpeed(RobotVelocity, RobotVelocity);
+	}
+	//stop spin left
+	else if (LastMovingAction == 6) {
+		spinLeft();
+		setSpeed(RobotVelocity, RobotVelocity);
+	}
+	
+	//speed down function
+	RobotVelocity = RobotVelocity - IntervalVelocityMinus;
+	if (RobotVelocity <= 0)
+		RobotVelocity = 0;
+}
+
+
+
+void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& user)
+{
+	double thresholdMaxZ = 1300.0;
+	double thresholdMinZ = 1000.0;
+	double thresholdMaxX = 220.0;
+	double thresholdMinX = 100.0;
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	float coordinates[3] = { 0 };
+	//coordinates[0] = user.getCenterOfMass().x;
+	//coordinates[1] = user.getCenterOfMass().y;
+	coordinates[2] = user.getCenterOfMass().z;
+	
+	pUserTracker->convertJointCoordinatesToDepth(user.getCenterOfMass().x, user.getCenterOfMass().y, user.getCenterOfMass().z, &coordinates[0], &coordinates[1]);
+
+	//cout << coordinates[0] << "   " << coordinates[2] << endl;
+
+	if (b_StopRobotTracking == true && RobotVelocity > 0)
+		StopRobotTracking();
+	else if (b_StopRobotTracking == true && RobotVelocity == 0)
+		b_StopRobotTracking = false;
+	else {
+		//host in the center
+		if (coordinates[0] <= thresholdMaxX && coordinates[0] >= thresholdMinX) {
+			//host in the range
+			if (coordinates[2] <= thresholdMaxZ && coordinates[2] >= thresholdMinZ) {
+				b_StopRobotTracking = true;
+			}
+			//host far away from iRobot in Z-Dim
+			else if (coordinates[2] > thresholdMaxZ) {
+				LastMovingAction = 1;
+				goForward();
+				setSpeed(RobotVelocity, RobotVelocity);
+				RobotVelocity = RobotVelocity + IntervalVelocity;
+				if (RobotVelocity > 300)
+					RobotVelocity = 300;
+			}
+			//host cloesd to iRobot in Z-Dim
+			else if (coordinates[2] < thresholdMinZ) {
+				LastMovingAction = 2;
+				// RobotDrive::setDrivetowhere("backward");
+				// RobotDrive::setDriveunit(RobotVelocity);
+				goBack();
+				setSpeed(RobotVelocity, RobotVelocity);
+				RobotVelocity = RobotVelocity + IntervalVelocity;
+				// set maximun speed value
+				if (RobotVelocity > 300)
+					RobotVelocity = 300;
+			}
+		}
+		//host in the right viewing field of iRobot 
+		else if (coordinates[0] < thresholdMinX) {
+			if (coordinates[2] <= thresholdMaxZ) {
+				b_StopRobotTracking = true;
+
+				if (RobotVelocity == 0) {
+					LastMovingAction = 5;
+					spinRight();
+					setSpeed(1000, 1000);
+					// RobotDrive::setDrivetowhere("spinright");
+					// RobotDrive::setDriveunit(30);
+				}
+			}
+			//host far away from iRobot (turn right)
+			else if (coordinates[2] > thresholdMaxZ) {
+				LastMovingAction = 3;
+				turnLeftRight(RobotVelocity, RobotVelocity-200);
+				// RobotDrive::setDrivetowhere("turnright");
+				// RobotDrive::setDriveunit(RobotVelocity);
+				
+				RobotVelocity = RobotVelocity + IntervalVelocity;
+				// set maximun speed value
+				if (RobotVelocity > 300)
+					RobotVelocity = 300;
+			}
+		}
+		////host in the left viewing field of iRobot
+		else if (coordinates[0] > thresholdMaxX) {
+			if (coordinates[2] <= thresholdMaxZ) {
+				b_StopRobotTracking = true;
+
+				if (RobotVelocity == 0) {
+					LastMovingAction = 6;
+					spinLeft();
+					setSpeed(1000, 1000);
+					// RobotDrive::setDrivetowhere("spinleft");
+					// RobotDrive::setDriveunit(30);
+				}
+			}
+			else if (coordinates[2] > thresholdMaxZ) {
+				LastMovingAction = 4;
+				turnLeftRight(RobotVelocity-200, RobotVelocity);
+				// RobotDrive::setDrivetowhere("turnleft");
+				// RobotDrive::setDriveunit(RobotVelocity);
+				
+				RobotVelocity = RobotVelocity + IntervalVelocity;
+				// set maximun speed value
+				if (RobotVelocity > 300)
+					RobotVelocity = 300;
+			}
+		}
+	}
+
 }
 
 
@@ -991,16 +1154,25 @@ void EoyViewer::Display()
 				}
 
 			}
+
 			if (g_drawCenterOfMass)
 			{
 				DrawCenterOfMass(m_pUserTracker, user);
 			}
 			//TODO draw bounding box when get the host name 
+
 			if (g_drawBoundingBox)
 			{
 				DrawBoundingBox(user);
 			}
+
 			//TODO : call tracking 
+			// if (g_runRobotTracking && user.getId() == i_FollowingTarget) { // if (g_runRobotTracking) 
+			// 	RunRobotTracking(m_pUserTracker, user);
+			// }
+			if (g_runRobotTracking) { // if (g_runRobotTracking) 
+				RunRobotTracking(m_pUserTracker, user);
+			}
 
 			if (users[i].getSkeleton().getState() == nite::SKELETON_TRACKED && g_drawSkeleton)
 			{
@@ -1009,9 +1181,7 @@ void EoyViewer::Display()
 				/*TODO write skeleton csv*/
 				
 				//get system time
-				SYSTEMTIME st;
 				GetLocalTime(&st);
-				//memset(time_str, '\0', 13); //xx:xx:xx:xxx
 				//sprintf_s(time_str, 13, "%02d:%02d:%02d:%03d", st.tm_hour, st.tm_min, st.tm_sec, st.wMilliseconds);
 				memset(time_str, '\0', 9); //xx:xx:xx
 				snprintf(time_str, 9, "%02d:%02d:%02d", st.tm_hour, st.tm_min, st.tm_sec);
@@ -1055,8 +1225,8 @@ void EoyViewer::Display()
 	if (g_drawFrameId)
 	{
 		DrawFrameId(userTrackerFrame.getFrameIndex());
-		//TODO: draw time
-		// DrawGlobalTime();
+		//draw SystemTime time
+		DrawSystemTime();
 	}
 
 	if (g_generalMessage[0] != '\0')

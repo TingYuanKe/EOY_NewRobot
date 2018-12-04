@@ -6,7 +6,19 @@
 *******************************************************************************/
 
 #include "Viewer.h"
+
 #include <pthread.h>
+
+#include <cstdio>
+#include <cstdlib>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <errno.h>
+#include <string.h>
+#include <iostream> //lib use in c++
+
+
 
 // PID Server Socket thread 
 void* RunPIDThreadFunc(void* data);
@@ -22,6 +34,9 @@ int main(int argc, char** argv)
 		WaitForSocket--;
 		sleep(1);
 	}
+
+	//****************Init ROS node******************************
+   	rosInit(argc, argv);
 
 	//****************Init Openni and Nite***********************
 	openni::Status rc = openni::STATUS_OK;

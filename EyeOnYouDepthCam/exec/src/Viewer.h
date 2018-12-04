@@ -51,6 +51,7 @@
 using namespace std;
 using namespace openni;
 
+void rosInit(int ,char **);
 
 enum DisplayModes
 {
@@ -68,6 +69,7 @@ public:
 	virtual openni::Status Init(int argc, char **argv);
 	virtual openni::Status Run();	//Does not return
 
+	
 
 protected:
 	virtual void Display();

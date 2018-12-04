@@ -5,7 +5,7 @@ if [ ! $# -eq 1 ]; then
 	exit
 fi
 
-read -p "Are You Sure to clean catkin_ws ? " yn
+read -p "Are You Sure to clean catkin_ws ? (y/n) " yn
 
 case $yn in
 	[Yy]* ) ;;
@@ -28,7 +28,7 @@ cd "$path/catkin_ws/src"
 catkin_init_workspace
 catkin_create_pkg $package std_msgs rospy roscpp
 cp "$path/catkin_ws/src/$package/CMakeLists.txt" "$path/catkin_ws/src/$package/CMakeLists.txt.orig"
-echo ""
+echo 
 echo "successfully! Create catkin_ws/src/$package "
 
 
