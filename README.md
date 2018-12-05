@@ -7,14 +7,17 @@ This project is build for AI demo in NCTU.
 ### In UDOO (lower) (ubuntu 16.04):
 
 *Get setup file ( can write in the .bashrc )*
+
 `source ~/catkin_ws/devel/setup.bash`
 
 *(First choice)*
 *Run ros master and all contoller_node* 
+
 `roslauch tracked_robot all_in_one.launch`
 
 *(Second choice)*
 *Only run certain node*
+
 `roscore`
 
 *雲台馬達*
