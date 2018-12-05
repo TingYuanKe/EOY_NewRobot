@@ -158,13 +158,6 @@ echo -e "OpenCV version:"
 pkg-config --modversion opencv
 ```
 
-### (). skeleton tracker via ROS
-[參考資料](https://blog.csdn.net/youngpan1101/article/details/71118170) 
-
-
-### (). NiTE project build flow
-[參考資料](https://github.com/keetsky/NiTE-2.0.0)
-
 ## gcc version update (optional)
 The default g++ version in ubuntu 16.04 is gcc version 5.4, but in this repo it needs g++ version greater than 7 for some case.
 ```
@@ -194,44 +187,6 @@ TODO
 ~~You can build the project and excute it without ROS installation, Note that it didn't provide robot tracking function if u run this program without ROS.~~ 
 
 
-## Auto create ROS workspace and package
-#### ROSws.sh<span></span>
-**Usage :**
-```
-./ROSws.sh <package_name>
-```
-package_name : the name of the ROS package.
-
-Default path of workspace is at your $HOME, you can change it at variable $path in Line 17.
-
-**Description :** 
-
-It would auto-create the catkin_ws, before creating a new workspace, it would remove the existed one.
-After creating package, it would copy the original CMakeLists.txt as CMakeLists.txt.orig to use for auto-create CMakeLists.txt in ROSmake.sh<span></span>.
-
-## Auto copy src file and auto compile
-#### ROSmake.sh<span></span>
-**Usage :**
-```
-./ROSmake.sh <EOY_Repo_path> <package_name>"
-```
-**EOY_Repo_path **: The path of the EOY repo which is download from github.
-_package_name_ : The name of the ROS package.
-
-Default path of workspace is at your ```$HOME/catkin_ws```, you can change it at variable ```$workspace``` in Line 17.
-
-Default source code path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/Samples/UserViewer```, you can change it at variable ```$SrcPath```in Line 10.
-
-Default Include path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-test/``` Include, you can change it at variable ```$IncludePath``` in Line 11.
-
-Default OpenNI library path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/OpenNI-Linux-x64-2.2/Redist```, you can change it at variable ```$OpenNI_src``` in Line 12.
-
-Default NiTE library path in repo is ```$RepoPath/EyeOnYouDepthCam/doc/NiTE-Linux-x64-2.2/Redist```, you can change it at variable $NiTE_src in Line 13.
-
-**Description :**
-
-This script would auto copy src file and all necessary Include file from your repo to the ROS workspace, and auto create the **CMakeLists.txt.**
-After copying, it would auto-compile the package.
 
 
 
