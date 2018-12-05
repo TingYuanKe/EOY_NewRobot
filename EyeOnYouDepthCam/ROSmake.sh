@@ -85,11 +85,6 @@ else
 	echo "${GREEN}Edit CMakeLists.txt successfully.${NC}"
 fi
 
-# copy NiTE2 dir to catkin_ws for quickly use
-if [ ! -d "$workspace/NiTE2" ];then
-	cp -R "$workspace/src/$package/NiTE2/NiTE2" "$workspace"
-	echo "${GREEN}Copy NiTE2 directory to catkin_ws successfully.${NC}"
-fi
 echo
 echo "**************************************"
 echo "***       Start to compile         ***"
@@ -99,4 +94,9 @@ echo "**************************************"
 cd $workspace
 catkin_make
 
- 
+ # copy NiTE2 dir to catkin_ws for quickly use
+if [ ! -d "$workspace/devel/NiTE2" ];then
+	cp -R "$workspace/src/$package/NiTE2/NiTE2" "$workspace/devel"
+	echo "${GREEN}Copy NiTE2 directory to catkin_ws successfully.${NC}"
+fi
+

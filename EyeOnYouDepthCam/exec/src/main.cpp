@@ -17,7 +17,7 @@
 #include <errno.h>
 #include <string.h>
 #include <iostream> //lib use in c++
-
+#include <unistd.h>
 
 
 // PID Server Socket thread 
@@ -25,6 +25,9 @@ void* RunPIDThreadFunc(void* data);
 
 int main(int argc, char** argv)
 {
+	// change current working directory
+	chdir("/home/newrobot/catkin_ws/devel");
+
 	//PID server
 	pthread_t threadServer;
 	pthread_create(&threadServer,NULL,RunPIDThreadFunc,NULL);
