@@ -11,11 +11,13 @@ This project is build for AI demo in NCTU.
 `source ~/catkin_ws/devel/setup.bash`
 
 *(First choice)*
+
 *Run ros master and all contoller_node* 
 
 `roslauch tracked_robot all_in_one.launch`
 
 *(Second choice)*
+
 *Only run certain node*
 
 `roscore`
