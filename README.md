@@ -22,13 +22,16 @@ This project is build for AI demo in NCTU.
 
 `roscore`
 
-*雲台馬達*
+*雲台馬達(optional)*
+
 `roslaunch my_dynamixel_workbench_tutorial position_control.launch`
 
-*履帶馬達*
+*履帶馬達(optional)*
+
 `rosrun tracked_robot Motor_node`
 
-*超音波*
+*超音波(optional)*
+
 `rosrun tracked_robot ultrasonic`
 
 
