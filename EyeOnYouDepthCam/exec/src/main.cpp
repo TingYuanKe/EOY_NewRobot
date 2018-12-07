@@ -18,17 +18,22 @@
 #include <string.h>
 #include <iostream> //lib use in c++
 #include <unistd.h>
+#include <signal.h>
 
 
 // PID Server Socket thread 
 void* RunPIDThreadFunc(void* data);
+void StopRobotHandler(int sig);
 
 int main(int argc, char** argv)
 {
 	// change current working directory
 	chdir("/home/newrobot/catkin_ws/devel");
+	
+	//ctrl + c singal handler to stop robot
+	signal(SIGINT,StopRobotHandler);
 
-	//PID server
+	//****************Init ROS node******************************
 	pthread_t threadServer;
 	pthread_create(&threadServer,NULL,RunPIDThreadFunc,NULL);
 	int WaitForSocket = 1;
@@ -115,6 +120,7 @@ int main(int argc, char** argv)
 	EoyViewer.Run();
 }
 
+
 void* RunPIDThreadFunc(void* data) {
 	cout << "Native ServerSocketRunPID server starting" << endl;
 
@@ -130,4 +136,10 @@ void* RunPIDThreadFunc(void* data) {
 	}
 	
 	return 0;
+}
+
+
+void StopRobotHandler(int sig) {
+	rosFinalize();
+	exit(1);
 }

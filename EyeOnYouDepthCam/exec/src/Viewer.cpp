@@ -41,8 +41,9 @@ bool g_drawStatusLabel = true;
 bool g_drawBoundingBox = false;
 bool g_drawBackground = true;
 bool g_drawDepth = true;
-bool g_drawFrameId = false;
+bool g_drawFrameId = true;
 bool g_runRobotTracking = true;
+bool g_robotArmMode = false;
 
 int g_nXRes = 0, g_nYRes = 0;
 
@@ -67,8 +68,12 @@ int i_FollowingTarget = -1;
 int LastMovingAction = 0; // 0: stop, 1: forward, 2: backward
 int RobotVelocity = 0;
 bool b_StopRobotTracking = true; 
-const int IntervalVelocity = 3;
-const int IntervalVelocityMinus = 8;
+
+const int SPEED_LIMIT = 1600;
+const int ROTATE_LIMIT = 1300;
+const int INTERVAL_VELOCITY_PLUS = 200;
+const int INTERVAL_VELOCITY_MINUS = 400;
+const int SPEED_WHEEL_DIFF = SPEED_LIMIT * 0.6;
 
 double lastRoll = 0;
 double lastPitch = 0;
@@ -126,6 +131,14 @@ void EoyViewer::Finalize()
 
 void rosInit(int argc, char** argv){
 	rosInit(argc, argv, "newrobot");
+	armUp();
+	cout << "Successfully connect to the Robot";
+}
+
+
+void rosFinalize() {
+	stopMotion();
+	cout << "Stop connect to the Robot";
 }
 
 
@@ -267,6 +280,16 @@ void DrawFrameId(int frameId)
 	sprintf(buffer, "%d", frameId);
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glRasterPos2i(20, 20);
+	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
+}
+
+void DrawMode(char* mode) 
+{
+	char buffer[80] = "";
+	sprintf(buffer, "%s", mode);
+	glColor3f(0.2f, 1.0f, 0.2f);
+	//TODO
+	glRasterPos2i(20, 60);
 	glPrintString(GLUT_BITMAP_HELVETICA_18, buffer);
 }
 
@@ -511,7 +534,7 @@ void StopRobotTracking()
 	}
 	
 	//speed down function
-	RobotVelocity = RobotVelocity - IntervalVelocityMinus;
+	RobotVelocity = RobotVelocity - INTERVAL_VELOCITY_MINUS;
 	if (RobotVelocity <= 0)
 		RobotVelocity = 0;
 }
@@ -537,7 +560,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	//cout << coordinates[0] << "   " << coordinates[2] << endl;
 
 	if (b_StopRobotTracking == true && RobotVelocity > 0)
-		StopRobotTracking();
+		stopMotion();
 	else if (b_StopRobotTracking == true && RobotVelocity == 0)
 		b_StopRobotTracking = false;
 	else {
@@ -552,9 +575,9 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 				LastMovingAction = 1;
 				goForward();
 				setSpeed(RobotVelocity, RobotVelocity);
-				RobotVelocity = RobotVelocity + IntervalVelocity;
-				if (RobotVelocity > 300)
-					RobotVelocity = 300;
+				RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
+				if (RobotVelocity > SPEED_LIMIT)
+					RobotVelocity = SPEED_LIMIT;
 			}
 			//host cloesd to iRobot in Z-Dim
 			else if (coordinates[2] < thresholdMinZ) {
@@ -563,21 +586,21 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 				// RobotDrive::setDriveunit(RobotVelocity);
 				goBack();
 				setSpeed(RobotVelocity, RobotVelocity);
-				RobotVelocity = RobotVelocity + IntervalVelocity;
+				RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 				// set maximun speed value
-				if (RobotVelocity > 300)
-					RobotVelocity = 300;
+				if (RobotVelocity > SPEED_LIMIT)
+					RobotVelocity = SPEED_LIMIT;
 			}
 		}
 		//host in the right viewing field of iRobot 
 		else if (coordinates[0] < thresholdMinX) {
+			setSpeed(1000, 1000);
 			if (coordinates[2] <= thresholdMaxZ) {
 				b_StopRobotTracking = true;
 
 				if (RobotVelocity == 0) {
 					LastMovingAction = 5;
-					spinRight();
-					setSpeed(1000, 1000);
+					spinRight();		
 					// RobotDrive::setDrivetowhere("spinright");
 					// RobotDrive::setDriveunit(30);
 				}
@@ -585,14 +608,14 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 			//host far away from iRobot (turn right)
 			else if (coordinates[2] > thresholdMaxZ) {
 				LastMovingAction = 3;
-				turnLeftRight(RobotVelocity, RobotVelocity-200);
+				turnLeftRight(RobotVelocity, RobotVelocity-SPEED_WHEEL_DIFF);
 				// RobotDrive::setDrivetowhere("turnright");
 				// RobotDrive::setDriveunit(RobotVelocity);
 				
-				RobotVelocity = RobotVelocity + IntervalVelocity;
+				RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 				// set maximun speed value
-				if (RobotVelocity > 300)
-					RobotVelocity = 300;
+				if (RobotVelocity > SPEED_LIMIT)
+					RobotVelocity = SPEED_LIMIT;
 			}
 		}
 		////host in the left viewing field of iRobot
@@ -610,14 +633,14 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 			}
 			else if (coordinates[2] > thresholdMaxZ) {
 				LastMovingAction = 4;
-				turnLeftRight(RobotVelocity-200, RobotVelocity);
+				turnLeftRight(RobotVelocity-SPEED_WHEEL_DIFF, RobotVelocity);
 				// RobotDrive::setDrivetowhere("turnleft");
 				// RobotDrive::setDriveunit(RobotVelocity);
 				
-				RobotVelocity = RobotVelocity + IntervalVelocity;
+				RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 				// set maximun speed value
-				if (RobotVelocity > 300)
-					RobotVelocity = 300;
+				if (RobotVelocity > SPEED_LIMIT)
+					RobotVelocity = SPEED_LIMIT;
 			}
 		}
 	}
@@ -1230,6 +1253,13 @@ void EoyViewer::Display()
 		//draw SystemTime time
 		DrawSystemTime();
 	}
+	if (g_runRobotTracking)
+	{
+		DrawMode("Robot Tracking Mode");
+	}
+	else {
+		DrawMode("Manual Controll Mode");
+	}
 
 	if (g_generalMessage[0] != '\0')
 	{
@@ -1252,8 +1282,9 @@ void EoyViewer::OnKey(unsigned char key, int /*x*/, int /*y*/)
 	{
 	case 27:
 		Finalize();
+		rosFinalize();
 		exit (1);
-	case 's':
+	case 'z':
 		// Draw skeleton?
 		g_drawSkeleton = !g_drawSkeleton;
 		break;
@@ -1273,7 +1304,7 @@ void EoyViewer::OnKey(unsigned char key, int /*x*/, int /*y*/)
 		// Draw background?
 		g_drawBackground = !g_drawBackground;
 		break;
-	case 'd':
+	case 'v':
 		// Draw depth?
 		g_drawDepth = !g_drawDepth;
 		break;
@@ -1281,24 +1312,68 @@ void EoyViewer::OnKey(unsigned char key, int /*x*/, int /*y*/)
 		// Draw frame ID
 		g_drawFrameId = !g_drawFrameId;
 		break;
-	case '1':
+	case '1': // Depth + RGB Stream Mode
 		m_eViewState = DISPLAY_MODE_OVERLAY;
 		m_device.setImageRegistrationMode(openni::IMAGE_REGISTRATION_DEPTH_TO_COLOR);
 		break;
-	case '2':
+	case '2': // Depth Stream Mode
 		m_eViewState = DISPLAY_MODE_DEPTH;
 		m_device.setImageRegistrationMode(openni::IMAGE_REGISTRATION_OFF);
 		break;
-	case '3':
+	case '3': // RGB Stream Mode
 		m_eViewState = DISPLAY_MODE_IMAGE;
 		m_device.setImageRegistrationMode(openni::IMAGE_REGISTRATION_OFF);
 		break;
-	case 'm':
+	case 'm': // flip the scene (mirror)
 		m_depthStream.setMirroringEnabled(!m_depthStream.getMirroringEnabled());
 		m_colorStream.setMirroringEnabled(!m_colorStream.getMirroringEnabled());
 		break;
-	}
+	case 'r': // change mode
+		g_runRobotTracking = !g_runRobotTracking;
+		stopMotion();	
+		break;
+	// Robot control keyword
+	case 'u': // armup and arm down
+		(g_robotArmMode)? armDown(): armUp();
+		g_robotArmMode = !g_robotArmMode;
+		if (g_robotArmMode) 
+			printf ("Arm Up");
+		else
+			cout << "Arm Down";
+		break;
+	case 32 : // stop robot
+		stopMotion();
+		break;
+	case 'w':
+		if (!g_runRobotTracking) 
+			setSpeed(SPEED_LIMIT, SPEED_LIMIT);
+			goForward();
+		break;
+	case 's':
+		if (!g_runRobotTracking) 
+			setSpeed(SPEED_LIMIT, SPEED_LIMIT);
+			goBack();
+		break;
+	case 'a':
+		if (!g_runRobotTracking) 
+			setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+			spinLeft();
+		break;
+	case 'd':
+		if (!g_runRobotTracking) 
+			setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+			spinRight();
+		break;
+	case 'q':
+		if (!g_runRobotTracking) 
+			turnLeftRight(SPEED_LIMIT - SPEED_WHEEL_DIFF, SPEED_LIMIT);
+		break;
+	case 'e':
+		if (!g_runRobotTracking)
+			turnLeftRight(SPEED_LIMIT, SPEED_LIMIT - SPEED_WHEEL_DIFF);
+		break;
 
+	}
 }
 
 openni::Status EoyViewer::InitOpenGL(int argc, char **argv)

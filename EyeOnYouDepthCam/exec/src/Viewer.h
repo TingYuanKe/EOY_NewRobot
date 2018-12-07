@@ -52,6 +52,7 @@ using namespace std;
 using namespace openni;
 
 void rosInit(int ,char **);
+void rosFinalize();
 
 enum DisplayModes
 {

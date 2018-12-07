@@ -85,6 +85,13 @@ else
 	echo "${GREEN}Edit CMakeLists.txt successfully.${NC}"
 fi
 
+read -p "Do you want to compile ? (y/n) " yn
+
+case $yn in
+	[Yy]* ) ;;
+	* ) exit;;
+esac
+
 echo
 echo "**************************************"
 echo "***       Start to compile         ***"

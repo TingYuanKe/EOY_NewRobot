@@ -5,27 +5,30 @@ if [ ! $# -eq 1 ]; then
 	exit
 fi
 
+package=$1
+path=$HOME
+
+
+
 read -p "Are You Sure to clean catkin_ws ? (y/n) " yn
 
 case $yn in
-	[Yy]* ) ;;
-	* ) exit;;
+	[Yy]* ) rm -rf "$path/catkin_ws";catkin_init_workspace ;;
+	* ) ;;
 esac
 
-package=$1
-
-path=$HOME
-#path="$HOME/tt"
-
-rm -rf "$path/catkin_ws"
+mkdir -p "$path/catkin_ws/src"
+cd "$path/catkin_ws/src"
 
 echo "**************************************"
 echo "***  Create Workspace and package  ***"
 echo "**************************************"
 
-mkdir -p "$path/catkin_ws/src"
-cd "$path/catkin_ws/src"
-catkin_init_workspace
+case $yn in
+	[Yy]* ) catkin_init_workspace ;;
+	* ) ;;
+esac
+
 catkin_create_pkg $package std_msgs rospy roscpp
 cp "$path/catkin_ws/src/$package/CMakeLists.txt" "$path/catkin_ws/src/$package/CMakeLists.txt.orig"
 echo 
