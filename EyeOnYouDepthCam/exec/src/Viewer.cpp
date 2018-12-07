@@ -1215,7 +1215,9 @@ void EoyViewer::Display()
 				if (userTrackerFrame.getTimestamp() - m_poseTime > g_poseTimeoutToExit * 1000)
 				{
 					printf("Count down complete. Exit...\n");
+					StopRobotTracking();
 					Finalize();
+
 					exit(2);
 				}
 			}

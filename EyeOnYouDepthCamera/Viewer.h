@@ -42,7 +42,7 @@
 
 #include "OpenNI.h"
 #include "NiTE.h"
-
+	 
 #include <cv.h>
 #include <highgui.h>
 #include <opencv2/imgproc/imgproc.hpp>
