@@ -66,13 +66,10 @@ char* strstri(char* t, char* s) {
 
 void SocketListener::HandleMessage(char* xml) {
 
-	/*
+	
 	if ( this->sender == NULL )
 		return;
-	*/
-
 	
-
 	if ( strstri(xml, "GetHostname") != 0 ) {
 		// printf("Client sent Hostname request message\n");
 		if ( sender != NULL )
@@ -93,8 +90,6 @@ void SocketListener::HandleMessage(char* xml) {
 	//		sender->sendRandomNumberResponse();
 	//}
 
-
-	// TODO : PIDRun module
 	
 	if (strstri(xml, "GetKinectKeepSkeleton") != NULL) {
 		PIDRun::setKeepSkeleton(true);
@@ -105,9 +100,9 @@ void SocketListener::HandleMessage(char* xml) {
 
 	if (strstri(xml, "GetKinectTagProfile") != NULL) {
 		PIDRun::setTagProfile(true);
-		// printf("Client sent GetKinectTagProfile request message\n");
-		//if (sender != NULL)
-		//	sender->sendKinectTagProfileResponse();
+		printf("Client sent GetKinectTagProfile request message\n");
+		if (sender != NULL)
+			sender->sendKinectTagProfileResponse();
 	}
 	
 }

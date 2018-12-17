@@ -43,8 +43,7 @@ int main(int argc, char** argv)
 		sleep(1);
 	}
 
-	//****************Init ROS node******************************
-   	rosInit(argc, argv);
+
 
 	//****************Init Openni and Nite***********************
 	openni::Status rc = openni::STATUS_OK;
@@ -109,7 +108,10 @@ int main(int argc, char** argv)
 		return 2;
 	}
 
+	//****************Init ROS node******************************
+   	rosInit(argc, argv);
 
+	//****************Show Visualization*************************
 	EoyViewer EoyViewer("EoyViewer Visualization", device, depth, color);
 
 	rc = EoyViewer.Init(argc, argv);
@@ -118,11 +120,13 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	EoyViewer.Run();
+
+
 }
 
 
 void* RunPIDThreadFunc(void* data) {
-	cout << "Native ServerSocketRunPID server starting" << endl;
+	cout << "=======ServerSocketRunPID Server Init========" << endl;
 
 	// Start server socket listener
 	ServerSocketRunPID* server = new ServerSocketRunPID();

@@ -10,10 +10,7 @@ void CThread::startThread() {
 	int iResult = pthread_create(&m_hThread,NULL,ThreadFunc,this);
 
 	if ( iResult == 0 ) {
-		m_fRunning = true;
-		
-		printf("Thread started\n");
-
+		m_fRunning = true;	
 	}
 	else printf("Failed to create thread\n");
 
@@ -24,7 +21,7 @@ void CThread::waitForExit() {
 		return;
 	void* status;
 
-	if(pthread_join(m_hThread,&status)){
+	if(pthread_join(m_hThread,&status)) {
 		printf("Failed to join thread\n");
 	}
 }

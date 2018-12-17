@@ -11,7 +11,7 @@ import pairing.PID;
 
 
 
-public class SocketClientWithSensing {
+public class SocketClientWithDepthCam {
     private Listener listener = null;
     private Sender sender = null;
     public boolean connected = false;
@@ -138,7 +138,7 @@ public class SocketClientWithSensing {
     }
 
     // SocketClientRunPID Constructor
-    public SocketClientWithSensing(String IPAddress) {
+    public SocketClientWithDepthCam(String IPAddress) {
         try {
             // Connect to the server at the given address on port 8081
             if ( IPAddress == null || IPAddress.length() == 0 )
@@ -150,8 +150,9 @@ public class SocketClientWithSensing {
             this.connected = true;
         }
         catch ( Exception e ) {
+        	System.err.println("\n"+e.getMessage());
+        	System.err.println("Connect to EyeOnYouDepthCam server fail, please make sure it has been excuted");
             connected = false;
-            e.printStackTrace();
         }
     }
 

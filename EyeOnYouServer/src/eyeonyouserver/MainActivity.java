@@ -20,6 +20,8 @@ public class MainActivity {
 	// FIle recieve folder
 	
 	public static void main(String[] args) throws IOException{
+		System.out.println("==========Java Server Init============");
+		
 		//find current network Interfaces 
 		Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
 		NetworkInterface e = n.nextElement();
@@ -38,12 +40,19 @@ public class MainActivity {
 		try{
 			servsock = new MainServerSocket(addr ,BACK_LOG , SOCKET_PORT);
 			
-			if(servsock.isConnected()){
+			if (servsock.isConnected()) {
 				servsock.run();
 			}
-		} finally{
+		}
+		catch (Exception errs) {
+			System.err.println(errs.getMessage());
+			System.err.println("Java server has been excuted,\n please stop all the server task and run again!");
+		}
+		finally{
 			if (servsock != null)
 				servsock.close();
+			System.err.println("\n==========Java Server End============");
+			System.exit(1);
 		}
 	}
 }
