@@ -50,13 +50,19 @@ Note: You can `export ROS_MASTER_URI=http://udoo:11311` in ~/.bashrc, or define 
 
 `./ROSws.sh <package_name>`
 
-*Run ROSmake.sh to copy src and include files from repo, and auto compile. 
+*Run ROSmake_EOY.sh to copy EOY src and include files from repo, and can choose to auto compile. 
 EOY_Repo_path is the path of the EOY repo which is download from github.
 The name of package need to be same as you define in ROSws.sh*
 
-`./ROSmake.sh <EOY_Repo_path> <package_name>`
+`./ROSmake_EOY.sh <EOY_Repo_path> <package_name>`
 
-Note: More detail for ROSws.sh and ROSmake.sh is in ROS_srcipt_doc.md 
+*( optional ) Run ROSmake_Manual.sh to copy ROS manual_control src from repo, and can choose to auto compile.
+EOY_Repo_path is the path of the EOY repo which is download from github.
+The name of package need to be same as you define in ROSws.sh
+
+`./ROSmake_Manual.sh <EOY_Repo_path> <package_name>`
+
+Note: More detail for ROS script is in ROS_srcipt_doc.md 
 
 *Start to run*
 
