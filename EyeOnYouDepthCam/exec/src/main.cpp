@@ -43,6 +43,10 @@ int main(int argc, char** argv)
 		sleep(1);
 	}
 
+		//****************Init ROS node******************************
+   	rosInit(argc, argv);
+	cout << "\n=====Successfully Init ROS=====\n";
+
 
 
 	//****************Init Openni and Nite***********************
@@ -108,8 +112,6 @@ int main(int argc, char** argv)
 		return 2;
 	}
 
-	//****************Init ROS node******************************
-   	rosInit(argc, argv);
 
 	//****************Show Visualization*************************
 	EoyViewer EoyViewer("EoyViewer Visualization", device, depth, color);
