@@ -60,6 +60,10 @@ $ Add to .bashrc: source ~/catkin_ws/devel/setup.bash
 First, Install** libsusb-1.0 ** and all the package you need.
 
 ```
+sudo apt-get install -y libopenni2-dev openni2-utils
+```
+
+```
 $ sudo apt-get install g++ python libusb-1.0-0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz
 ```
 若在使用apt-get下載包的時候出現伺服器的error到 ```/etc/apt``` 輸入
