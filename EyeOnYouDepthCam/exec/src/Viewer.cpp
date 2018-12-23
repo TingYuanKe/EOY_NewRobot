@@ -66,10 +66,10 @@ int confidenceOfResult = -1;
 char s_FollowingTarget[30] = "Hans"; //host name
 int i_FollowingTarget = -1;
 int LastMovingAction = 0; // 0: stop, 1: forward, 2: backward, 3: turn right, 4: turn left, 5:spin right, 6:spin left
-const int RobotVelocity = 1800;
+const int RobotVelocity = 1600;
 bool b_StopRobotTracking = true; 
 
-const int SPEED_LIMIT = 1800;
+const int SPEED_LIMIT = 1600;
 const int ROTATE_LIMIT = 1300;
 const int INTERVAL_VELOCITY_PLUS = 200;
 const int INTERVAL_VELOCITY_MINUS = 400;
@@ -305,7 +305,7 @@ void DrawCenterOfMass(nite::UserTracker* pUserTracker, const nite::UserData& use
 	float coordinates[3] = {0};
 
 	pUserTracker->convertJointCoordinatesToDepth(user.getCenterOfMass().x, user.getCenterOfMass().y, user.getCenterOfMass().z, &coordinates[0], &coordinates[1]);
-	cout << "X = " << coordinates[0]  << "Z = " << coordinates[2] << endl;
+
 
 	coordinates[0] *= GL_WIN_SIZE_X/(float)g_nXRes;
 	coordinates[1] *= GL_WIN_SIZE_Y/(float)g_nYRes;
@@ -553,19 +553,36 @@ void StopRobotTracking_2() {
 
 void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& user)
 {
-	double thresholdMaxZ = 1600.0;
-	double thresholdMinZ = 1200.0;
-	double thresholdMaxX = 220.0;
-	double thresholdMinX = -100.0;
+	float thresholdMaxZ = 1700.0;
+	float thresholdMinZ = 1000.0;
+
+	float thresholdMaxX;
+	float thresholdMinX;
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	float coordinates[3] = { 0 };
-	//coordinates[0] = user.getCenterOfMass().x;
-	//coordinates[1] = user.getCenterOfMass().y;
-	coordinates[2] = user.getCenterOfMass().z;
-	
+	coordinates[0] =  user.getCenterOfMass().x;
+	coordinates[1] =  user.getCenterOfMass().y;
+	coordinates[2] =  user.getCenterOfMass().z;
+
 	pUserTracker->convertJointCoordinatesToDepth(user.getCenterOfMass().x, user.getCenterOfMass().y, user.getCenterOfMass().z, &coordinates[0], &coordinates[1]);
+		
+	if (coordinates[2] < thresholdMaxZ) {
+		thresholdMaxX = 230.0;
+		thresholdMinX = 130.0;
+	}
+	else if (coordinates[2] >= thresholdMaxZ && coordinates[2] <= 2700.0) {
+		thresholdMaxX = coordinates[2] * 0.05 + 145;
+		thresholdMinX = coordinates[2] * (-0.05) + 215;
+	}
+	else if(coordinates[2] > 2700.0){
+		thresholdMaxX = 280.0;
+		thresholdMinX =  80.0;
+	}
+
+	cout << "X =     " << coordinates[0]  << " Z =  " << coordinates[2] << endl;
+	cout << "thresh minX = " << thresholdMinX << " thresh maxX = " << thresholdMaxX <<endl;
 
 	//cout << coordinates[0] << "   " << coordinates[2] << endl;
 
@@ -598,17 +615,19 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	}
 	//host in the right viewing field of iRobot 
 	else if (coordinates[0] < thresholdMinX) {
+		cout << "please turn right" <<endl;
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 5) {
 				LastMovingAction = 5;
 				setSpeed(1000, 1000);
-				spinRight();			
+				spinRight();		
+				cout << "spin right!!!!" <<endl;
 			
 		}
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
 			turnLeftRight(RobotVelocity + RobotVelocity *0.2, RobotVelocity-SPEED_WHEEL_DIFF);
-	
+			cout << "turn right!!" <<endl;
 			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 			// // set maximun speed value
 			// if (RobotVelocity > SPEED_LIMIT)
@@ -1070,8 +1089,8 @@ void EoyViewer::Display()
 			//TODO : call tracking 
 			// if (g_runRobotTracking && user.getId() == i_FollowingTarget) { // if (g_runRobotTracking) 
 			// 	RunRobotTracking(m_pUserTracker, user);
-			// }
-			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 10 == 0)) { // if (g_runRobotTracking) 
+			// } //&& (user.getId() == i_FollowingTarget)
+			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 20 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
 				RunRobotTracking(m_pUserTracker, user);
 			}
 

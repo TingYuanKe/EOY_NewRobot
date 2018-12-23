@@ -1,2 +1,2 @@
-export OPENNI2_INCLUDE=/home/newrobot/Desktop/EOY_NewRobot/EyeOnYouDepthCam/OpenNI-Linux-x64-2.2/Include
-export OPENNI2_REDIST=/home/newrobot/Desktop/EOY_NewRobot/EyeOnYouDepthCam/OpenNI-Linux-x64-2.2/Redist
+export OPENNI2_INCLUDE=/home/newrobot/Desktop/EOY_NewRobot/EyeOnYouDepthCam/lib/OpenNI-Linux-x64-2.2/Include
+export OPENNI2_REDIST=/home/newrobot/Desktop/EOY_NewRobot/EyeOnYouDepthCam/lib/OpenNI-Linux-x64-2.2/Redist
