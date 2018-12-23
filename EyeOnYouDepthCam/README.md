@@ -183,13 +183,7 @@ sudo ln -s /usr/bin/gcc-7 /usr/bin/gcc -f
 
 ## Execution
 
-
-####1. Running with ROS
-
-####2. Running w/o ROS
-TODO
-~~You can build the project and excute it without ROS installation, Note that it didn't provide robot tracking function if u run this program without ROS.~~ 
-
+// TODO
 
 
 
