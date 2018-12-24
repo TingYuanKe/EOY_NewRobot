@@ -13,6 +13,8 @@
 
 #include "Viewer.h"
 #include "robot_control.h"
+#include "OpenNI.h"
+#include "NiTE.h"
 
 #if (ONI_PLATFORM == ONI_PLATFORM_MACOSX)
         #include <GLUT/glut.h>
@@ -89,6 +91,21 @@ typedef struct tm SYSTEMTIME;
 void GetLocalTime(SYSTEMTIME *st);
 SYSTEMTIME st;
 
+	
+	unsigned int		m_nTexMapX;
+	unsigned int		m_nTexMapY;
+
+	// for openGl multi-stream
+	DisplayModes		m_eViewState;
+	openni::RGB888Pixel*	m_pTexMap;
+	int			m_width;  // for OpenGL muti-streams
+	int			m_height; // for OpenGL multi-streams
+
+	nite::UserTracker* m_pUserTracker;
+
+	nite::UserId m_poseUser;
+	uint64_t m_poseTime;
+
 //*********************************************************
 
 void EoyViewer::glutIdle()
@@ -147,10 +164,61 @@ void rosFinalize() {
 
 
 openni::Status EoyViewer::Init(int argc, char **argv)
-{
+{	
+	previousTime = clock();
+
+
+	// init 2 video streams
+	openni::VideoMode depthVideoMode;
+	openni::VideoMode colorVideoMode;
+
 	m_pTexMap = NULL;
 
 	openni::Status rc = openni::OpenNI::initialize();
+
+	if (m_depthStream.isValid() && m_colorStream.isValid())
+	{
+		depthVideoMode = m_depthStream.getVideoMode();
+		colorVideoMode = m_colorStream.getVideoMode();
+
+		int depthWidth = depthVideoMode.getResolutionX();
+		int depthHeight = depthVideoMode.getResolutionY();
+		int colorWidth = colorVideoMode.getResolutionX();
+		int colorHeight = colorVideoMode.getResolutionY();
+
+		if (depthWidth == colorWidth &&
+			depthHeight == colorHeight)
+		{
+			m_width = depthWidth;
+			m_height = depthHeight;
+		}
+		else
+		{
+			printf("Error - expect color and depth to be in same resolution: D: %dx%d, C: %dx%d\n",
+				depthWidth, depthHeight,
+				colorWidth, colorHeight);
+			return openni::STATUS_ERROR;
+		}
+	}
+	else if (m_depthStream.isValid())
+	{
+		depthVideoMode = m_depthStream.getVideoMode();
+		m_width = depthVideoMode.getResolutionX();
+		m_height = depthVideoMode.getResolutionY();
+	}
+	else if (m_colorStream.isValid())
+	{
+		colorVideoMode = m_colorStream.getVideoMode();
+		m_width = colorVideoMode.getResolutionX();
+		m_height = colorVideoMode.getResolutionY();
+	}
+	else
+	{
+		printf("Error - expects at least one of the streams to be valid...\n");
+		return openni::STATUS_ERROR;
+	}
+
+
 	if (rc != openni::STATUS_OK)
 	{
 		printf("Failed to initialize OpenNI\n%s\n", openni::OpenNI::getExtendedError());
@@ -173,6 +241,16 @@ openni::Status EoyViewer::Init(int argc, char **argv)
 		printf("Failed to open device\n%s\n", openni::OpenNI::getExtendedError());
 		return rc;
 	}
+	printf("RGB Init Succesllfuly\n", openni::OpenNI::getExtendedError());
+	m_streams = new openni::VideoStream*[2];
+	m_streams[0] = &m_depthStream;
+	m_streams[1] = &m_colorStream;
+
+	// Texture map init
+	m_nTexMapX = MIN_CHUNKS_SIZE(m_width, TEXTURE_SIZE);
+	m_nTexMapY = MIN_CHUNKS_SIZE(m_height, TEXTURE_SIZE);
+	m_pTexMap = new openni::RGB888Pixel[m_nTexMapX * m_nTexMapY];
+
 
 	nite::NiTE::initialize();
 
@@ -185,6 +263,8 @@ openni::Status EoyViewer::Init(int argc, char **argv)
 	return InitOpenGL(argc, argv);
 
 }
+
+
 openni::Status EoyViewer::Run()	//Does not return
 {
 	glutMainLoop();
@@ -196,12 +276,45 @@ openni::Status EoyViewer::Run()	//Does not return
 float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
 int colorCount = 3;
 
-#define MAX_USERS 300
+#define MAX_USERS 30
+#define NAME_LEN 100
+#define HIST_LEN 125
+
 bool g_visibleUsers[MAX_USERS] = {false};
 nite::SkeletonState g_skeletonStates[MAX_USERS] = {nite::SKELETON_NONE};
 char g_userStatusLabels[MAX_USERS][100] = {{0}};
-
 char g_generalMessage[512] = {0};
+
+
+
+// for PID memory
+char g_userNameLabels[MAX_USERS][NAME_LEN] = {{0}};
+char g_userNameLabelsByHist[MAX_USERS][NAME_LEN] = {{0}};
+char g_userColorNameLabels[MAX_USERS][NAME_LEN] = {{0}};
+bool g_userNameConfidence[MAX_USERS] = {false};
+int g_userColorHistogramLabels[MAX_USERS][HIST_LEN] = {0};
+
+int g_userUpdateCount[MAX_USERS] = {0};
+
+// clean all g_user variable array 
+void cleanUserBuffer (int idx) {
+	for (int i = 0; i < NAME_LEN; i++){
+		g_userNameLabels[idx][i] = 0;
+		g_userNameLabelsByHist[idx][i] = 0;
+		g_userColorNameLabels[idx][i] = 0;
+	}
+
+	for (int i = 0; i < HIST_LEN; i++){
+		g_userColorHistogramLabels[idx][i] = 0;
+
+	}
+	g_userNameConfidence[idx] = false;
+	g_userUpdateCount[idx] = 0;
+
+	cout <<"=======Clean user" << idx << "buffer=======" << endl;
+
+
+}
 
 #define USER_MESSAGE(msg) {\
 	sprintf(g_userStatusLabels[user.getId()], "%s", msg);\
@@ -212,7 +325,7 @@ void updateUserState(const nite::UserData& user, uint64_t ts)
 {
 	if (user.isNew())
 	{
-		USER_MESSAGE("New");
+		USER_MESSAGE("New, initial memory buffer");
 	}
 	else if (user.isVisible() && !g_visibleUsers[user.getId()])
 		printf("[%08" PRIu64 "] User #%d:\tVisible\n", ts, user.getId());
@@ -221,6 +334,8 @@ void updateUserState(const nite::UserData& user, uint64_t ts)
 	else if (user.isLost())
 	{
 		USER_MESSAGE("Lost");
+
+
 	}
 	g_visibleUsers[user.getId()] = user.isVisible();
 
@@ -500,50 +615,6 @@ void WriteSkeletonInfo(int ID, ofstream& csvout, const nite::UserData& userData,
 }
 
 
-// void StopRobotTracking()
-// {
-// 	//forward speed down
-// 	if (LastMovingAction == 1) {
-// 		goForward();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 		// RobotDrive::setDrivetowhere("forward");
-// 		// RobotDrive::setDriveunit(RobotVelocity);
-// 	}
-// 	//backward speed down
-// 	else if (LastMovingAction == 2) {
-// 		goBack();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 		// RobotDrive::setDrivetowhere("backward");
-// 		// RobotDrive::setDriveunit(RobotVelocity);
-// 	}
-// 	//stop turn right
-// 	else if (LastMovingAction == 3) {
-// 		goForward();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 	}
-// 	//stop turn left 
-// 	else if (LastMovingAction == 4) {
-// 		goForward();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 	}
-// 	//stop spin right
-// 	else if (LastMovingAction == 5) {
-// 		spinRight();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 	}
-// 	//stop spin left
-// 	else if (LastMovingAction == 6) {
-// 		spinLeft();
-// 		setSpeed(RobotVelocity, RobotVelocity);
-// 	}
-	
-// 	//speed down function
-// 	RobotVelocity = RobotVelocity - INTERVAL_VELOCITY_MINUS;
-// 	if (RobotVelocity <= 0)
-// 		RobotVelocity = 0;
-// }
-
-
 void StopRobotTracking_2() {
 	stopMotion();
 	LastMovingAction = 0;
@@ -581,10 +652,6 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		thresholdMinX =  60.0;
 	}
 
-	cout << "X =     " << coordinates[0]  << " Z =  " << coordinates[2] << endl;
-	cout << "thresh minX = " << thresholdMinX << " thresh maxX = " << thresholdMaxX <<endl;
-
-	//cout << coordinates[0] << "   " << coordinates[2] << endl;
 
 	//host in the center
 	if (coordinates[0] <= thresholdMaxX && coordinates[0] >= thresholdMinX) {
@@ -598,19 +665,13 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 			LastMovingAction = 1;
 			goForward();
 			setSpeed(RobotVelocity, RobotVelocity);
-			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
-			// if (RobotVelocity > SPEED_LIMIT)
-			// 	RobotVelocity = SPEED_LIMIT;
 		}
 		//host cloesd to iRobot in Z-Dim
 		else if (coordinates[2] < thresholdMinZ  && LastMovingAction != 2) {
 			LastMovingAction = 2;
 			goBack();
 			setSpeed(RobotVelocity, RobotVelocity);
-			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
-			// set maximun speed value
-			// if (RobotVelocity > SPEED_LIMIT)
-			// 	RobotVelocity = SPEED_LIMIT;
+
 		}
 	}
 	//host in the right viewing field of iRobot 
@@ -628,10 +689,6 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 			LastMovingAction = 3;
 			turnLeftRight(RobotVelocity + RobotVelocity *0.35, RobotVelocity-SPEED_WHEEL_DIFF);
 			cout << "turn right!!" <<endl;
-			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
-			// // set maximun speed value
-			// if (RobotVelocity > SPEED_LIMIT)
-			// 	RobotVelocity = SPEED_LIMIT;
 		}
 	}
 	////host in the left viewing field of iRobot
@@ -640,18 +697,11 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 				LastMovingAction = 6;
 				setSpeed(1000, 1000);
 				spinLeft();
-				// RobotDrive::setDrivetowhere("spinleft");
-				// RobotDrive::setDriveunit(30);
 			}
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
 			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.35);
-
-			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
-			// // set maximun speed value
-			// if (RobotVelocity > SPEED_LIMIT)
-			// 	RobotVelocity = SPEED_LIMIT;
 		}
 	}
 }
@@ -686,10 +736,13 @@ void GetResultOfPID()
 			getline(resultfile, line, '\n');
 			resultfile.close();
 		}
+
 		istringstream templine(line);
 		string data, nameReadFile;
+
 		double x, y;
 		int idx = 0;
+
 		while (getline(templine, data, ',')) {
 			if (idx == 0) {
 				if (data.compare("1") == 0)
@@ -702,12 +755,12 @@ void GetResultOfPID()
 			}
 			if (idx != 0 && idx % 2 == 1) {
 				VotingPID::setID(data.c_str());
-				cout << "id: " << data.c_str() << endl;
+				cout << "id: " << data.c_str();
 			}
 			else if (idx != 0 && idx % 2 == 0) {
 				nameReadFile = data.c_str();
 				VotingPID::setnameVotingWithIndex(VotingPID::getID(), VotingPID::votingOfPID(VotingPID::getID(), nameReadFile));
-				cout << "name: " << data.c_str() << endl;
+				cout << ", name: " << data.c_str() << endl;
 			}
 			idx += 1;
 		}
@@ -716,18 +769,6 @@ void GetResultOfPID()
 }
 
 
-/* For histogram sensing */
-// float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
-// int colorCount = 3;
-
-//bool g_visibleUsers[MAX_USERS] = {false};
-//nite::SkeletonState g_skeletonStates[MAX_USERS] = {nite::SKELETON_NONE};
-//char g_userStatusLabels[MAX_USERS][100] = {{0}};
-char g_userNameLabels[MAX_USERS][100] = {{0}};
-char g_userNameLabelsByHist[MAX_USERS][100] = {{0}};
-bool g_userNameConfidence[MAX_USERS] = {false};
-char g_userColorNameLabels[MAX_USERS][100] = {{0}};
-int g_userColorHistogramLabels[MAX_USERS][125] = {0};
 
 //char g_generalMessage[100] = { 0 };
 
@@ -747,23 +788,30 @@ int g_userColorHistogramLabels[MAX_USERS][125] = {0};
 
 
 void updateIdentity(const char *NAME, const bool CONFIDENCE, openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pUserTracker, const nite::UserData& userData, uint64_t ts)
-{
+{	
 	// combine string : ID : name
 	char str[80];
 	sprintf(str, "%d", userData.getId());
 	strcat(str, ": ");
 	strcat(str, NAME);
 
+	g_userUpdateCount[userData.getId()] ++;
 	
 	USER_NAME(str);
 	USER_CONFIDENCE(CONFIDENCE);
 
 	// richardyctsai
+	// get host ID from host name
 	if (g_userNameConfidence[userData.getId()] == true) {
 		if (strcmp(NAME, s_FollowingTarget) == 0) {
 			i_FollowingTarget = userData.getId();
 		}
-
+		USER_NAME_HIST(str);
+	}
+	else {
+		if (strcmp(NAME, s_FollowingTarget) == 0) {
+			i_FollowingTarget = userData.getId();
+		}
 		strcat(str, "\n(Hist)");
 		USER_NAME_HIST(str);
 	}
@@ -773,6 +821,7 @@ void updateIdentity(const char *NAME, const bool CONFIDENCE, openni::VideoFrameR
 
 void DrawIdentity(nite::UserTracker* pUserTracker, const nite::UserData& userData)
 {
+	
 	int color = userData.getId() % colorCount;
 	glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
 
@@ -782,9 +831,18 @@ void DrawIdentity(nite::UserTracker* pUserTracker, const nite::UserData& userDat
 	pUserTracker->convertJointCoordinatesToDepth(userData.getCenterOfMass().x, userData.getCenterOfMass().y, userData.getCenterOfMass().z, &x, &y);
 	x *= GL_WIN_SIZE_X / (float)g_nXRes;
 	y *= GL_WIN_SIZE_Y / (float)g_nYRes;
+
 	char *msg = g_userNameLabels[userData.getId()];
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y-80);
-	glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	if (g_userUpdateCount[userData.getId()] < 2) { 
+		const char* unknow_identity = "x";
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);	
+	}
+	else {
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+	}
+	
 
 }
 
@@ -802,7 +860,15 @@ void DrawIdentityByHist(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracke
 	y *= GL_WIN_SIZE_Y / (float)g_nYRes;
 	char *msg = g_userNameLabelsByHist[userData.getId()];
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
-	glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+
+	if (g_userUpdateCount[userData.getId()] < 2) { 
+		const char* unknow_identity = "x";
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
+	}
+	else {
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
+		
+	}	
 
 }
 
@@ -866,13 +932,13 @@ void DrawUserColor(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pU
 void EoyViewer::Display()
 {	
 	// tingyuanke
-	int changedIndex;
-	//openni::Status rc = openni::OpenNI::waitForAnyStream(m_streams, 2, &changedIndex);
-	// if (rc != openni::STATUS_OK)
-	// {
-	// 	printf("Wait failed\n");
-	// 	return;
-	// }
+	int changedIndex ;
+	openni::Status rc = openni::OpenNI::waitForAnyStream(m_streams, 2, &changedIndex);
+	if (rc != openni::STATUS_OK)
+	{
+		printf("Wait failed\n");
+		return;
+	}
 
 	switch (changedIndex)
 	{
@@ -886,8 +952,9 @@ void EoyViewer::Display()
 
 	nite::UserTrackerFrameRef userTrackerFrame;
 	openni::VideoFrameRef depthFrame;
-	nite::Status rc = m_pUserTracker->readFrame(&userTrackerFrame);
-	if (rc != nite::STATUS_OK)
+
+	nite::Status rcUserTracker = m_pUserTracker->readFrame(&userTrackerFrame);
+	if (rcUserTracker != nite::STATUS_OK)
 	{
 		printf("GetNextData failed\n");
 		return;
@@ -1038,20 +1105,24 @@ void EoyViewer::Display()
 	// Read result.csv to tag profile on top of the head
 	 GetResultOfPID();
 
-
 	for (int i = 0; i < users.getSize(); ++i)
 	{
 		const nite::UserData& user = users[i];
 
 		// TODO : draw name (after GetResultOfPID)
 		if (confidenceOfResult == 1)
+		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), true, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
+		}
 		else if (confidenceOfResult == 0)
+		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), false, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
-
+		}
+		
 		updateUserState(user, userTrackerFrame.getTimestamp());
 		if (user.isNew())
-		{
+		{	
+			cleanUserBuffer(user.getId());
 			m_pUserTracker->startSkeletonTracking(user.getId());
 			m_pUserTracker->startPoseDetection(user.getId(), nite::POSE_CROSSED_HANDS);
 		}
@@ -1069,7 +1140,7 @@ void EoyViewer::Display()
 				else if (user.isNew()){
 					
 				}
-				else if (g_userNameConfidence[user.getId()] == false)
+				else if (g_userNameConfidence[user.getId()] == false && !(user.isNew()))
 				{
 					//DrawIdentity(m_pUserTracker, user);
 					DrawIdentityByHist(m_colorFrame, m_pUserTracker, user);
@@ -1147,7 +1218,8 @@ void EoyViewer::Display()
 			}
 		}
 	}
-
+	confidenceOfResult = -1;
+	// Screen Visualization
 	if (g_drawFrameId)
 	{
 		DrawFrameId(userTrackerFrame.getFrameIndex());
@@ -1285,6 +1357,7 @@ openni::Status EoyViewer::InitOpenGL(int argc, char **argv)
 	glutCreateWindow (m_strSampleName);
 	// 	glutFullScreen();
 	glutSetCursor(GLUT_CURSOR_NONE);
+	glTranslatef (4., 0., 0.);
 
 	InitOpenGLHooks();
 
@@ -1297,6 +1370,8 @@ openni::Status EoyViewer::InitOpenGL(int argc, char **argv)
 	return openni::STATUS_OK;
 
 }
+
+
 void EoyViewer::InitOpenGLHooks()
 {
 	glutKeyboardFunc(glutKeyboard);

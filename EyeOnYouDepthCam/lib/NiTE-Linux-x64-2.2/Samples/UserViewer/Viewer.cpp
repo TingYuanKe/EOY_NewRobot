@@ -339,12 +339,14 @@ void SampleViewer::Display()
 {
 	nite::UserTrackerFrameRef userTrackerFrame;
 	openni::VideoFrameRef depthFrame;
+	cout << "1111111"<<endl;
 	nite::Status rc = m_pUserTracker->readFrame(&userTrackerFrame);
 	if (rc != nite::STATUS_OK)
 	{
 		printf("GetNextData failed\n");
 		return;
 	}
+	cout<< "2222222" <<endl;
 
 	depthFrame = userTrackerFrame.getDepthFrame();
 

@@ -92,20 +92,8 @@ protected:
 	openni::VideoStream&		m_depthStream;
 	openni::VideoStream&		m_colorStream;
 	openni::VideoStream**		m_streams;
-	
 
-private:
-	EoyViewer(const EoyViewer&);
-	EoyViewer& operator=(EoyViewer&);
-
-	static EoyViewer* ms_self;
-	static void glutIdle();
-	static void glutDisplay();
-	static void glutKeyboard(unsigned char key, int x, int y);
-
-	float				m_pDepthHist[MAX_DEPTH];
-	char			m_strSampleName[ONI_MAX_STR];
-	
+		
 	unsigned int		m_nTexMapX;
 	unsigned int		m_nTexMapY;
 
@@ -119,6 +107,20 @@ private:
 
 	nite::UserId m_poseUser;
 	uint64_t m_poseTime;
+	
+
+private:
+	EoyViewer(const EoyViewer&);
+	EoyViewer& operator=(EoyViewer&);
+
+	static EoyViewer* ms_self;
+	static void glutIdle();
+	static void glutDisplay();
+	static void glutKeyboard(unsigned char key, int x, int y);
+
+	float				m_pDepthHist[MAX_DEPTH];
+	char			m_strSampleName[ONI_MAX_STR];
+
 };
 
 

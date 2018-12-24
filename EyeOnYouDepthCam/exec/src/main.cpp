@@ -119,6 +119,7 @@ int main(int argc, char** argv)
 	rc = EoyViewer.Init(argc, argv);
 	if (rc != openni::STATUS_OK)
 	{
+		openni::OpenNI::shutdown();
 		return 1;
 	}
 	EoyViewer.Run();
