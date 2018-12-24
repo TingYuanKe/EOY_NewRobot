@@ -66,10 +66,10 @@ int confidenceOfResult = -1;
 char s_FollowingTarget[30] = "Hans"; //host name
 int i_FollowingTarget = -1;
 int LastMovingAction = 0; // 0: stop, 1: forward, 2: backward, 3: turn right, 4: turn left, 5:spin right, 6:spin left
-const int RobotVelocity = 1600;
+const int RobotVelocity = 2300;
 bool b_StopRobotTracking = true; 
 
-const int SPEED_LIMIT = 1600;
+const int SPEED_LIMIT = 2300;
 const int ROTATE_LIMIT = 1300;
 const int INTERVAL_VELOCITY_PLUS = 200;
 const int INTERVAL_VELOCITY_MINUS = 400;
@@ -196,12 +196,12 @@ openni::Status EoyViewer::Run()	//Does not return
 float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
 int colorCount = 3;
 
-#define MAX_USERS 10
+#define MAX_USERS 300
 bool g_visibleUsers[MAX_USERS] = {false};
 nite::SkeletonState g_skeletonStates[MAX_USERS] = {nite::SKELETON_NONE};
 char g_userStatusLabels[MAX_USERS][100] = {{0}};
 
-char g_generalMessage[100] = {0};
+char g_generalMessage[512] = {0};
 
 #define USER_MESSAGE(msg) {\
 	sprintf(g_userStatusLabels[user.getId()], "%s", msg);\
@@ -577,8 +577,8 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		thresholdMinX = coordinates[2] * (-0.05) + 215;
 	}
 	else if(coordinates[2] > 2700.0){
-		thresholdMaxX = 280.0;
-		thresholdMinX =  80.0;
+		thresholdMaxX = 300.0;
+		thresholdMinX =  60.0;
 	}
 
 	cout << "X =     " << coordinates[0]  << " Z =  " << coordinates[2] << endl;
@@ -626,7 +626,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
-			turnLeftRight(RobotVelocity + RobotVelocity *0.2, RobotVelocity-SPEED_WHEEL_DIFF);
+			turnLeftRight(RobotVelocity + RobotVelocity *0.35, RobotVelocity-SPEED_WHEEL_DIFF);
 			cout << "turn right!!" <<endl;
 			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 			// // set maximun speed value
@@ -646,7 +646,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
-			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.2);
+			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.35);
 
 			// RobotVelocity = RobotVelocity + INTERVAL_VELOCITY_PLUS;
 			// // set maximun speed value
@@ -1066,12 +1066,16 @@ void EoyViewer::Display()
 					DrawIdentity(m_pUserTracker, user);
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 				}	
+				else if (user.isNew()){
+					
+				}
 				else if (g_userNameConfidence[user.getId()] == false)
 				{
 					//DrawIdentity(m_pUserTracker, user);
 					DrawIdentityByHist(m_colorFrame, m_pUserTracker, user);
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 				}
+				
 
 			}
 
@@ -1079,9 +1083,9 @@ void EoyViewer::Display()
 			{
 				DrawCenterOfMass(m_pUserTracker, user);
 			}
-			//TODO draw bounding box when get the host name 
 
-			if (g_drawBoundingBox)
+			//TODO draw bounding box when get the host name 
+			if (g_drawBoundingBox && (user.getId() == i_FollowingTarget))
 			{
 				DrawBoundingBox(user);
 			}
@@ -1090,7 +1094,7 @@ void EoyViewer::Display()
 			// if (g_runRobotTracking && user.getId() == i_FollowingTarget) { // if (g_runRobotTracking) 
 			// 	RunRobotTracking(m_pUserTracker, user);
 			// } //&& (user.getId() == i_FollowingTarget)
-			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 20 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
+			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 15 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
 				RunRobotTracking(m_pUserTracker, user);
 			}
 
