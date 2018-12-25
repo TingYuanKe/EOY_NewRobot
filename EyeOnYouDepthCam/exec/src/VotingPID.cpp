@@ -65,5 +65,6 @@ void VotingPID::setnameVotingWithIndex(int rec_index, string rec_VotingResult)
 void VotingPID::cleanVotingBufferWithIndex(int rec_id)
 {
 	myPIDVector[rec_id].clear();
-	cout << "=======Voting buffer cleaned=======";
+	cout << "=======Voting buffer cleaned=======" << endl;
+	cout << rec_id<<" buffer size ="<< myPIDVector[rec_id].size() <<endl;
 }

@@ -73,10 +73,10 @@ bool b_StopRobotTracking = true;
 
 const int RobotVelocity = 2300;
 const int SPEED_LIMIT = 2300;
-const int ROTATE_LIMIT = 1300;
+const int ROTATE_LIMIT = 1000;
 const int INTERVAL_VELOCITY_PLUS = 200;
 const int INTERVAL_VELOCITY_MINUS = 400;
-const int SPEED_WHEEL_DIFF = SPEED_LIMIT * 0.3;
+const int SPEED_WHEEL_DIFF = SPEED_LIMIT * 0.45;
 
 double lastRoll = 0;
 double lastPitch = 0;
@@ -665,15 +665,14 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot in Z-Dim
 		else if (coordinates[2] > thresholdMaxZ  && LastMovingAction != 1) {
 			LastMovingAction = 1;
-			goForward();
 			setSpeed(RobotVelocity, RobotVelocity);
+			goForward();
 		}
 		//host cloesd to iRobot in Z-Dim
 		else if (coordinates[2] < thresholdMinZ  && LastMovingAction != 2) {
 			LastMovingAction = 2;
-			goBack();
 			setSpeed(RobotVelocity, RobotVelocity);
-
+			goBack();
 		}
 	}
 	//host in the right viewing field of iRobot 
@@ -689,7 +688,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
-			turnLeftRight(RobotVelocity + RobotVelocity *0.5, RobotVelocity-SPEED_WHEEL_DIFF);
+			turnLeftRight(RobotVelocity + RobotVelocity *0.35, RobotVelocity-SPEED_WHEEL_DIFF);
 			cout << "turn right!!" <<endl;
 		}
 	}
@@ -703,7 +702,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
-			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.5);
+			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.35);
 		}
 	}
 }
@@ -871,7 +870,7 @@ void DrawIdentityByHist(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracke
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
 
 	//Tag unknown or PID name
-	if (g_userUpdateCount[userData.getId()] < 2 && g_userTagID[userData.getId()]) { 
+	if (g_userUpdateCount[userData.getId()] < 2 ) { 
 		const char* unknow_identity = "x";
 		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
 	}
@@ -1109,16 +1108,17 @@ void EoyViewer::Display()
 		const nite::UserData& user = users[i];
 
 		// TODO : draw name (after GetResultOfPID)
-		if (confidenceOfResult == 1)
+		if (confidenceOfResult == 1 && g_userTagID[user.getId()])
 		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), true, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 		}
-		else if (confidenceOfResult == 0)
+		else if (confidenceOfResult == 0 && g_userTagID[user.getId()])
 		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), false, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 		}
 		
 		updateUserState(user, userTrackerFrame.getTimestamp());
+
 		if (user.isNew())
 		{	
 			cleanUserBuffer(user.getId());
@@ -1133,12 +1133,12 @@ void EoyViewer::Display()
 			{
 				// TODO
 				//DrawStatusLabel(m_pUserTracker, user);
-				if (g_userNameConfidence[user.getId()] == true)
+				if (g_userNameConfidence[user.getId()] == true && g_userTagID[user.getId()])
 				{
 					DrawIdentity(m_pUserTracker, user);
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 				}	
-				else if (g_userNameConfidence[user.getId()] == false && !(user.isNew()))
+				else if (g_userNameConfidence[user.getId()] == false && g_userTagID[user.getId()])
 				{
 					//DrawIdentity(m_pUserTracker, user);
 					DrawIdentityByHist(m_colorFrame, m_pUserTracker, user);
@@ -1162,7 +1162,7 @@ void EoyViewer::Display()
 			// if (g_runRobotTracking && user.getId() == i_FollowingTarget) { // if (g_runRobotTracking) 
 			// 	RunRobotTracking(m_pUserTracker, user);
 			// } //&& (user.getId() == i_FollowingTarget)
-			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 15 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
+			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 6 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
 				RunRobotTracking(m_pUserTracker, user);
 			}
 
