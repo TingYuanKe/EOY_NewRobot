@@ -20,38 +20,6 @@ void SocketSender::sendHostnameResponse() {
 	sendXMLToClient(buffer);
 }
 
-// Unused ??
-//void SocketSender::sendMemoryResponse() {
-//	MEMORYSTATUS memory;
-//	GlobalMemoryStatus(&memory);
-//
-//	char buffer[512];
-//	buffer[0] = 0;
-//	sprintf( 
-//		buffer, 
-//		"<Response><Name>MemoryResponse</Name><TotalPhysicalMemory>%i</TotalPhysicalMemory></Response>\n", 
-//		memory.dwTotalPhys);
-//
-//	sendXMLToClient(buffer);
-//}
-
-// Send command to iRobot: Unused ??
-//void SocketSender::sendRandomNumberResponse() {
-//	char buffer[512];
-//	buffer[0] = 0;
-//
-//	char response_drivetowhere[512] = "";
-//	int response_driveunit = 0;
-//
-//	memset(response_drivetowhere, 0, sizeof(response_drivetowhere));
-//	strncat(response_drivetowhere, RobotDrive::getDrivetowhere(),512);
-//	response_driveunit = RobotDrive::getDriveunit();
-//
-//	sprintf(buffer, "%s,%i\n", response_drivetowhere, response_driveunit);
-//	sendXMLToClient(buffer);
-//}
-
-
 // TODO : PIDRun module
 
 void SocketSender::sendKinectKeepSkeletonResponse() {

@@ -1,10 +1,8 @@
 #include "VotingPID.h"
 
-vector< vector<string> > VotingPID::myPIDVector(
-	6,
-	vector<string>(votingLength, "") );
+vector< vector<string> > VotingPID::myPIDVector(15,vector<string>(votingLength, "") );
 int VotingPID::ID = -1;
-string VotingPID::nameVoting[6] = {""};
+string VotingPID::nameVoting[15] = {""};
 
 //VotingPID::VotingPID(vector<string> init_myPIDVector, string init_id, string init_nameVoting)
 //{
@@ -63,4 +61,9 @@ string VotingPID::getnameVotingWithIndex(int rec_index)
 void VotingPID::setnameVotingWithIndex(int rec_index, string rec_VotingResult)
 {
 	nameVoting[rec_index] = rec_VotingResult;
+}
+void VotingPID::cleanVotingBufferWithIndex(int rec_id)
+{
+	myPIDVector[rec_id].clear();
+	cout << "=======Voting buffer cleaned=======";
 }

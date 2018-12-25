@@ -1,4 +1,5 @@
 package eyeonyouserver;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -22,6 +23,17 @@ public class MainActivity {
 	public static void main(String[] args) throws IOException{
 		System.out.println("==========Java Server Init============");
 		
+		//clean sensing files in the IMUData and SkeletonData
+		for(File file:new java.io.File("/home/newrobot/data/SkeletonData").listFiles()) {
+			 if (!file.isDirectory()) 
+			        file.delete();
+		}
+		
+		for(File file:new java.io.File("/home/newrobot/data/IMUData").listFiles()) {
+			 if (!file.isDirectory()) 
+			        file.delete();
+		}
+		   
 		//find current network Interfaces 
 		Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
 		NetworkInterface e = n.nextElement();
@@ -49,9 +61,10 @@ public class MainActivity {
 			System.err.println("Java server has been excuted,\n please stop all the server task and run again!");
 		}
 		finally{
+			// terminate server socket
 			if (servsock != null)
 				servsock.close();
-			System.err.println("\n==========Java Server End============");
+			
 			System.exit(1);
 		}
 	}

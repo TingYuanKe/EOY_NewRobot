@@ -14,7 +14,7 @@ class VotingPID {
 		static const int votingLength = 5;
 		static vector< vector<string> > myPIDVector;
 		static int ID;
-		static string nameVoting[6];
+		static string nameVoting[15];
 
 	public:
 		//VotingPID(vector<string> init_myPIDVector, string init_id, string init_nameVoting);
@@ -25,6 +25,7 @@ class VotingPID {
 		static void setID(string rec_id);
 		static string getnameVotingWithIndex(int rec_index);
 		static void setnameVotingWithIndex(int rec_index, string rec_VotingResult);
+		static void cleanVotingBufferWithIndex(int rec_index);
 };
 
 #endif

@@ -65,12 +65,13 @@ string resultfilename = "/home/newrobot/data/SkeletonData/result.csv";
 string line;
 int confidenceOfResult = -1;
 
-char s_FollowingTarget[30] = "Hans"; //host name
+char s_FollowingTarget[30] = "chwang"; //host name
 int i_FollowingTarget = -1;
 int LastMovingAction = 0; // 0: stop, 1: forward, 2: backward, 3: turn right, 4: turn left, 5:spin right, 6:spin left
-const int RobotVelocity = 2300;
+
 bool b_StopRobotTracking = true; 
 
+const int RobotVelocity = 2300;
 const int SPEED_LIMIT = 2300;
 const int ROTATE_LIMIT = 1300;
 const int INTERVAL_VELOCITY_PLUS = 200;
@@ -276,7 +277,7 @@ openni::Status EoyViewer::Run()	//Does not return
 float Colors[][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}, {1, 1, 1}};
 int colorCount = 3;
 
-#define MAX_USERS 30
+#define MAX_USERS 15
 #define NAME_LEN 100
 #define HIST_LEN 125
 
@@ -293,6 +294,7 @@ char g_userNameLabelsByHist[MAX_USERS][NAME_LEN] = {{0}};
 char g_userColorNameLabels[MAX_USERS][NAME_LEN] = {{0}};
 bool g_userNameConfidence[MAX_USERS] = {false};
 int g_userColorHistogramLabels[MAX_USERS][HIST_LEN] = {0};
+int g_userTagID[MAX_USERS];
 
 int g_userUpdateCount[MAX_USERS] = {0};
 
@@ -625,7 +627,7 @@ void StopRobotTracking_2() {
 void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& user)
 {
 	float thresholdMaxZ = 1700.0;
-	float thresholdMinZ = 1000.0;
+	float thresholdMinZ = 1250.0;
 
 	float thresholdMaxX;
 	float thresholdMinX;
@@ -639,17 +641,17 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 
 	pUserTracker->convertJointCoordinatesToDepth(user.getCenterOfMass().x, user.getCenterOfMass().y, user.getCenterOfMass().z, &coordinates[0], &coordinates[1]);
 		
-	if (coordinates[2] < thresholdMaxZ) {
+		if (coordinates[2] < thresholdMaxZ) {
 		thresholdMaxX = 230.0;
 		thresholdMinX = 130.0;
 	}
 	else if (coordinates[2] >= thresholdMaxZ && coordinates[2] <= 2700.0) {
-		thresholdMaxX = coordinates[2] * 0.05 + 145;
-		thresholdMinX = coordinates[2] * (-0.05) + 215;
+		thresholdMaxX = coordinates[2] * 0.085 + 85;
+		thresholdMinX = coordinates[2] * (-0.085) + 274.5;
 	}
-	else if(coordinates[2] > 2700.0){
-		thresholdMaxX = 300.0;
-		thresholdMinX =  60.0;
+	else if(coordinates[2] > 2700.0) {
+		thresholdMaxX = 315.0;
+		thresholdMinX =  55.0;
 	}
 
 
@@ -679,7 +681,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		cout << "please turn right" <<endl;
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 5) {
 				LastMovingAction = 5;
-				setSpeed(1000, 1000);
+				setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 				spinRight();		
 				cout << "spin right!!!!" <<endl;
 			
@@ -687,7 +689,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
-			turnLeftRight(RobotVelocity + RobotVelocity *0.35, RobotVelocity-SPEED_WHEEL_DIFF);
+			turnLeftRight(RobotVelocity + RobotVelocity *0.5, RobotVelocity-SPEED_WHEEL_DIFF);
 			cout << "turn right!!" <<endl;
 		}
 	}
@@ -695,13 +697,13 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	else if (coordinates[0] > thresholdMaxX) {
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 6) {
 				LastMovingAction = 6;
-				setSpeed(1000, 1000);
+				setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 				spinLeft();
 			}
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
-			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.35);
+			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.5);
 		}
 	}
 }
@@ -742,6 +744,7 @@ void GetResultOfPID()
 
 		double x, y;
 		int idx = 0;
+		memset(g_userTagID, 0, sizeof(g_userTagID));
 
 		while (getline(templine, data, ',')) {
 			if (idx == 0) {
@@ -754,12 +757,18 @@ void GetResultOfPID()
 				cout << "data.c_str(): " << data.c_str() << "  confidenceOfResult: " << confidenceOfResult << endl;
 			}
 			if (idx != 0 && idx % 2 == 1) {
-				VotingPID::setID(data.c_str());
+				if(confidenceOfResult)
+					VotingPID::setID(data.c_str());
+				
 				cout << "id: " << data.c_str();
+
+				int idx = stoi(data.c_str());
+				g_userTagID[idx] = 1;
 			}
 			else if (idx != 0 && idx % 2 == 0) {
 				nameReadFile = data.c_str();
-				VotingPID::setnameVotingWithIndex(VotingPID::getID(), VotingPID::votingOfPID(VotingPID::getID(), nameReadFile));
+				if (confidenceOfResult)
+					VotingPID::setnameVotingWithIndex(VotingPID::getID(), VotingPID::votingOfPID(VotingPID::getID(), nameReadFile));
 				cout << ", name: " << data.c_str() << endl;
 			}
 			idx += 1;
@@ -774,16 +783,16 @@ void GetResultOfPID()
 
 
 #define USER_COLOR(msg) {\
-	sprintf(g_userColorNameLabels[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+	sprintf(g_userColorNameLabels[userData.getId()], "%s", msg);}
 
 #define USER_CONFIDENCE(msg) {\
 	g_userNameConfidence[userData.getId()] = msg;}
 
 #define USER_NAME(msg) {\
-	sprintf(g_userNameLabels[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+	sprintf(g_userNameLabels[userData.getId()], "%s", msg);}
 
 #define USER_NAME_HIST(msg) {\
-	sprintf(g_userNameLabelsByHist[userData.getId()], "%s", msg);} // printf("[%08" PRIu64 "] User #%d:\t%s\n", ts, userData.getId(), msg);
+	sprintf(g_userNameLabelsByHist[userData.getId()], "%s", msg);}
 
 
 
@@ -806,7 +815,7 @@ void updateIdentity(const char *NAME, const bool CONFIDENCE, openni::VideoFrameR
 		if (strcmp(NAME, s_FollowingTarget) == 0) {
 			i_FollowingTarget = userData.getId();
 		}
-		USER_NAME_HIST(str);
+		USER_NAME(str);
 	}
 	else {
 		if (strcmp(NAME, s_FollowingTarget) == 0) {
@@ -815,7 +824,6 @@ void updateIdentity(const char *NAME, const bool CONFIDENCE, openni::VideoFrameR
 		strcat(str, "\n(Hist)");
 		USER_NAME_HIST(str);
 	}
-
 }
 
 
@@ -835,7 +843,8 @@ void DrawIdentity(nite::UserTracker* pUserTracker, const nite::UserData& userDat
 	char *msg = g_userNameLabels[userData.getId()];
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y-80);
 
-	if (g_userUpdateCount[userData.getId()] < 2) { 
+	// Tag unknown or PID name
+	if (g_userUpdateCount[userData.getId()] < 2  && g_userTagID[userData.getId()])  { 
 		const char* unknow_identity = "x";
 		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);	
 	}
@@ -861,7 +870,8 @@ void DrawIdentityByHist(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracke
 	char *msg = g_userNameLabelsByHist[userData.getId()];
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
 
-	if (g_userUpdateCount[userData.getId()] < 2) { 
+	//Tag unknown or PID name
+	if (g_userUpdateCount[userData.getId()] < 2 && g_userTagID[userData.getId()]) { 
 		const char* unknow_identity = "x";
 		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
 	}
@@ -902,17 +912,6 @@ void DrawUserColor(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracker* pU
 	strcat(str, ColorMemory::ColorClassification().c_str());
 	USER_COLOR(str);
 
-	//cout << "rgb = ("
-	//	<< r << ","
-	//	<< g << ","
-	//	<< b << ")"
-	//	<< endl;
-
-	//cout << "hsl = ("
-	//	<< hsl[0] << ","
-	//	<< hsl[1] << ","
-	//	<< hsl[2] << ")"
-	//	<< endl;
 
 	int color = userData.getId() % colorCount;
 	glColor3f(1.0f - Colors[color][0], 1.0f - Colors[color][1], 1.0f - Colors[color][2]);
@@ -1123,6 +1122,8 @@ void EoyViewer::Display()
 		if (user.isNew())
 		{	
 			cleanUserBuffer(user.getId());
+			VotingPID::cleanVotingBufferWithIndex(user.getId());
+
 			m_pUserTracker->startSkeletonTracking(user.getId());
 			m_pUserTracker->startPoseDetection(user.getId(), nite::POSE_CROSSED_HANDS);
 		}
@@ -1137,9 +1138,6 @@ void EoyViewer::Display()
 					DrawIdentity(m_pUserTracker, user);
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 				}	
-				else if (user.isNew()){
-					
-				}
 				else if (g_userNameConfidence[user.getId()] == false && !(user.isNew()))
 				{
 					//DrawIdentity(m_pUserTracker, user);
@@ -1147,7 +1145,6 @@ void EoyViewer::Display()
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 				}
 				
-
 			}
 
 			if (g_drawCenterOfMass)
@@ -1193,14 +1190,14 @@ void EoyViewer::Display()
 			{
 				// Start timer
 				sprintf(g_generalMessage, "In exit pose. Keep it for %d second%s to exit\n", g_poseTimeoutToExit/1000, g_poseTimeoutToExit/1000 == 1 ? "" : "s");
-				printf("Counting down %d second to exit\n", g_poseTimeoutToExit/1000);
+				//printf("Counting down %d second to exit\n", g_poseTimeoutToExit/1000);
 				m_poseUser = user.getId();
 				m_poseTime = userTrackerFrame.getTimestamp();
 			}
 			else if (pose.isExited())
 			{
 				memset(g_generalMessage, 0, sizeof(g_generalMessage));
-				printf("Count-down interrupted\n");
+				//printf("Count-down interrupted\n");
 				m_poseTime = 0;
 				m_poseUser = 0;
 			}
@@ -1209,7 +1206,7 @@ void EoyViewer::Display()
 				// tick
 				if (userTrackerFrame.getTimestamp() - m_poseTime > g_poseTimeoutToExit * 1000)
 				{
-					printf("Count down complete. Exit...\n");
+					//printf("Count down complete. Exit...\n");
 					StopRobotTracking_2();
 					Finalize();
 
