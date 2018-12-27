@@ -71,12 +71,12 @@ int LastMovingAction = 0; // 0: stop, 1: forward, 2: backward, 3: turn right, 4:
 
 bool b_StopRobotTracking = true; 
 
-const int RobotVelocity = 2300;
-const int SPEED_LIMIT = 2300;
-const int ROTATE_LIMIT = 1000;
+const int RobotVelocity = 2400;
+const int SPEED_LIMIT = 2400;
+const int ROTATE_LIMIT = 1100;
 const int INTERVAL_VELOCITY_PLUS = 200;
 const int INTERVAL_VELOCITY_MINUS = 400;
-const int SPEED_WHEEL_DIFF = SPEED_LIMIT * 0.45;
+const int SPEED_WHEEL_DIFF = SPEED_LIMIT * 0.4;
 
 double lastRoll = 0;
 double lastPitch = 0;
@@ -324,7 +324,12 @@ void cleanUserBuffer (int idx) {
 
 
 void updateUserState(const nite::UserData& user, uint64_t ts)
-{
+{	
+	if (user.getCenterOfMass().z >3000) {
+		//cout << "dis:" << user.getCenterOfMass().z <<endl;
+		return;
+	}
+
 	if (user.isNew())
 	{
 		USER_MESSAGE("New, initial memory buffer");
@@ -626,8 +631,8 @@ void StopRobotTracking_2() {
 
 void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& user)
 {
-	float thresholdMaxZ = 1700.0;
-	float thresholdMinZ = 1250.0;
+	float thresholdMaxZ = 1600.0;
+	float thresholdMinZ = 1350.0;
 
 	float thresholdMaxX;
 	float thresholdMinX;
@@ -642,16 +647,16 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	pUserTracker->convertJointCoordinatesToDepth(user.getCenterOfMass().x, user.getCenterOfMass().y, user.getCenterOfMass().z, &coordinates[0], &coordinates[1]);
 		
 		if (coordinates[2] < thresholdMaxZ) {
-		thresholdMaxX = 230.0;
-		thresholdMinX = 130.0;
+		thresholdMaxX = 210.0;
+		thresholdMinX = 140.0;
 	}
 	else if (coordinates[2] >= thresholdMaxZ && coordinates[2] <= 2700.0) {
-		thresholdMaxX = coordinates[2] * 0.085 + 85;
-		thresholdMinX = coordinates[2] * (-0.085) + 274.5;
+		thresholdMaxX = coordinates[2] * 0.085 + 65.5;
+		thresholdMinX = coordinates[2] * (-0.085) + 284.5;
 	}
 	else if(coordinates[2] > 2700.0) {
-		thresholdMaxX = 315.0;
-		thresholdMinX =  55.0;
+		thresholdMaxX = 295.0;
+		thresholdMinX =  75.0;
 	}
 
 
@@ -677,19 +682,18 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	}
 	//host in the right viewing field of iRobot 
 	else if (coordinates[0] < thresholdMinX) {
-		cout << "please turn right" <<endl;
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 5) {
 				LastMovingAction = 5;
 				setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 				spinRight();		
-				cout << "spin right!!!!" <<endl;
+				//cout << "spin right!!!!" <<endl;
 			
 		}
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
-			turnLeftRight(RobotVelocity + RobotVelocity *0.35, RobotVelocity-SPEED_WHEEL_DIFF);
-			cout << "turn right!!" <<endl;
+			turnLeftRight(RobotVelocity + RobotVelocity *0.25, RobotVelocity-SPEED_WHEEL_DIFF);
+			//cout << "turn right!!" <<endl;
 		}
 	}
 	////host in the left viewing field of iRobot
@@ -702,7 +706,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
-			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.35);
+			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.25);
 		}
 	}
 }
@@ -756,7 +760,7 @@ void GetResultOfPID()
 				cout << "data.c_str(): " << data.c_str() << "  confidenceOfResult: " << confidenceOfResult << endl;
 			}
 			if (idx != 0 && idx % 2 == 1) {
-				if(confidenceOfResult)
+				//if(confidenceOfResult)
 					VotingPID::setID(data.c_str());
 				
 				cout << "id: " << data.c_str();
@@ -766,7 +770,7 @@ void GetResultOfPID()
 			}
 			else if (idx != 0 && idx % 2 == 0) {
 				nameReadFile = data.c_str();
-				if (confidenceOfResult)
+				//if (confidenceOfResult)
 					VotingPID::setnameVotingWithIndex(VotingPID::getID(), VotingPID::votingOfPID(VotingPID::getID(), nameReadFile));
 				cout << ", name: " << data.c_str() << endl;
 			}
@@ -843,14 +847,18 @@ void DrawIdentity(nite::UserTracker* pUserTracker, const nite::UserData& userDat
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y-80);
 
 	// Tag unknown or PID name
-	if (g_userUpdateCount[userData.getId()] < 2  && g_userTagID[userData.getId()])  { 
+	if (userData.getCenterOfMass().z >3300){
 		const char* unknow_identity = "x";
-		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);	
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
+	}
+	else if (g_userUpdateCount[userData.getId()] < 1) { 
+		const char* unknow_identity = "unknown";
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
 	}
 	else {
 		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, msg);
-	}
-	
+		
+	}	
 
 }
 
@@ -870,8 +878,12 @@ void DrawIdentityByHist(openni::VideoFrameRef arg_m_colorFrame, nite::UserTracke
 	glRasterPos2i(x - ((strlen(msg) / 2) * 8), y - 80);
 
 	//Tag unknown or PID name
-	if (g_userUpdateCount[userData.getId()] < 2 ) { 
+	if (userData.getCenterOfMass().z >3300){
 		const char* unknow_identity = "x";
+		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
+	}
+	else if (g_userUpdateCount[userData.getId()] < 1) { 
+		const char* unknow_identity = "unknown";
 		glPrintString(GLUT_BITMAP_TIMES_ROMAN_24, unknow_identity);
 	}
 	else {
@@ -1108,18 +1120,18 @@ void EoyViewer::Display()
 		const nite::UserData& user = users[i];
 
 		// TODO : draw name (after GetResultOfPID)
-		if (confidenceOfResult == 1 && g_userTagID[user.getId()])
+		if (confidenceOfResult == 1 && g_userTagID[user.getId()] && user.getCenterOfMass().z <3300 && user.isVisible())
 		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), true, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 		}
-		else if (confidenceOfResult == 0 && g_userTagID[user.getId()])
+		else if (confidenceOfResult == 0 && g_userTagID[user.getId()] && user.getCenterOfMass().z <3300 && user.isVisible())
 		{
 			updateIdentity(VotingPID::getnameVotingWithIndex(user.getId()).c_str(), false, m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
 		}
 		
 		updateUserState(user, userTrackerFrame.getTimestamp());
 
-		if (user.isNew())
+		if (user.isNew() && user.getCenterOfMass().z <3300)
 		{	
 			cleanUserBuffer(user.getId());
 			VotingPID::cleanVotingBufferWithIndex(user.getId());
@@ -1133,7 +1145,7 @@ void EoyViewer::Display()
 			{
 				// TODO
 				//DrawStatusLabel(m_pUserTracker, user);
-				if (g_userNameConfidence[user.getId()] == true && g_userTagID[user.getId()])
+				if (g_userNameConfidence[user.getId()] == true && g_userTagID[user.getId()] )
 				{
 					DrawIdentity(m_pUserTracker, user);
 					//DrawUserColor(m_colorFrame, m_pUserTracker, user, userTrackerFrame.getTimestamp());
@@ -1153,7 +1165,7 @@ void EoyViewer::Display()
 			}
 
 			//TODO draw bounding box when get the host name 
-			if (g_drawBoundingBox && (user.getId() == i_FollowingTarget))
+			if (g_drawBoundingBox && (user.getId() == i_FollowingTarget) && user.getCenterOfMass().z <3300)
 			{
 				DrawBoundingBox(user);
 			}
@@ -1162,12 +1174,14 @@ void EoyViewer::Display()
 			// if (g_runRobotTracking && user.getId() == i_FollowingTarget) { // if (g_runRobotTracking) 
 			// 	RunRobotTracking(m_pUserTracker, user);
 			// } //&& (user.getId() == i_FollowingTarget)
-			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 6 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
+			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 3 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
 				RunRobotTracking(m_pUserTracker, user);
 			}
 
-			if (users[i].getSkeleton().getState() == nite::SKELETON_TRACKED && g_drawSkeleton)
+			//skeleton sensing
+			if (users[i].getSkeleton().getState() == nite::SKELETON_TRACKED && g_drawSkeleton && users[i].getCenterOfMass().z < 2200 && users[i].isVisible()) 
 			{
+				//cout << "user id :" << users[i].getId() << " z :" << users[i].getCenterOfMass().z <<endl;
 				DrawSkeleton(m_pUserTracker, user);
 
 				/*TODO write skeleton csv*/
