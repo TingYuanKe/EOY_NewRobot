@@ -1,6 +1,8 @@
 # EOY_NewRobot 
 
-This project is build for AI demo in NCTU.
+This project is build for AI demo in NCTU. and this project is based on the ROS (Robot Operating System).
+
+After doing PID, the c++ server would parse the PID result and send the Tracking instruction to UDOO with ROS.
 
 ## **Usage:**
 
