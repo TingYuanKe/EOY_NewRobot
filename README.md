@@ -1,8 +1,19 @@
 # EOY_NewRobot 
 
 This project is build for AI demo in NCTU. and this project is based on the ROS (Robot Operating System).
-
 After doing PID, the c++ server would parse the PID result and send the Tracking instruction to UDOO with ROS.
+
+It contain 4 different modules: 
+
+* **Device Position** : Android App to sensing the right wrist joint data and send to server via socket.
+* **EoyOnYouServer** : Java application that Perform Data Sensning, **Sysnchronization** along with **PID Algorithm** via Socket
+* **EoyOnYouDepthCam** : ROS wrapped C++ Robot Vision module that perform Skeleton sensing, histgram sesning, socket clinet IPC, Robot Tracking.
+
+* **tracked_robot** : TODO
+
+## **System Archtecture**
+![Imgur](https://i.imgur.com/R2Nfq4r.png)
+
 
 ## **Usage:**
 
@@ -66,7 +77,20 @@ The name of package need to be same as you define in ROSws.sh
 
 Note: More detail for ROS script is in ROS_srcipt_doc.md 
 
-*Start to run*
+## Excution
+
+#### Setup Robot and environment
+
+ Make sure you've already set up the Robot and all the devices are connected to the same AP.
+ 
+ You can see the following link to setup all the modules
+ * [EyeOnYouDepthCam](https://github.com/TingYuanKe/EOY_NewRobot/tree/master/EyeOnYouDepthCam)
+ * [DevicePosition](https://github.com/TingYuanKe/EOY_NewRobot/tree/master/DevicePosition)
+ * [EyeOnYouServer](https://github.com/TingYuanKe/EOY_NewRobot/tree/master/EyeOnYouServer)
+ * [tracked_robo]
+
+
+#### Launch Ros node on CUBI
 
 *get setup file ( can write in the .bashrc )*
 
@@ -75,4 +99,8 @@ Note: More detail for ROS script is in ROS_srcipt_doc.md
 `rosrun <package_name> <node_name>`
 
 Note: You can `export ROS_MASTER_URI=http://udoo:11311` in ~/.bashrc, or define it when everytimes running.
+
+####  Launch the 'APP' on the android devices
+
+####  Launch the Server  
 
