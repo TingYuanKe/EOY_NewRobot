@@ -79,7 +79,7 @@ Note: More detail for ROS script is in ROS_srcipt_doc.md
 
 ## Excution
 
-#### Setup Robot and environment
+####  1. Setup Robot and environment
 
  Make sure you've already set up the Robot and all the devices are connected to the same AP.
  
@@ -90,7 +90,7 @@ Note: More detail for ROS script is in ROS_srcipt_doc.md
  * [tracked_robo]
 
 
-#### Launch Ros node on CUBI
+#### 2. Launch Ros node on CUBI
 
 *get setup file ( can write in the .bashrc )*
 
@@ -100,7 +100,7 @@ Note: More detail for ROS script is in ROS_srcipt_doc.md
 
 Note: You can `export ROS_MASTER_URI=http://udoo:11311` in ~/.bashrc, or define it when everytimes running.
 
-####  Launch the 'APP' on the android devices
+####  3. Launch  APP on the Android Devices
 
-####  Launch the Server  
+####  4. Launch the Server  
 
