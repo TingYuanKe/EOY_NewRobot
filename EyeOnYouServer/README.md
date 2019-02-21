@@ -1,6 +1,5 @@
 # EyeonYou-Server
 
-=======
 This module is build for recieve data from IMU and Skelton sensor and Perform PID algorithm
 ## Installation
 
