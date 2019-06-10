@@ -104,3 +104,38 @@ Note: You can `export ROS_MASTER_URI=http://udoo:11311` in ~/.bashrc, or define 
 
 ####  4. Launch the Server  
 
+## Note
+### Setting
+**Asus Cubi** (with TeamViewer)
+
+Username: newrobot@NewRobotCubi
+
+IP: 192.168.0.198
+
+**AP**
+
+Name: EOY_AP
+
+Name: EOY_AP2
+
+**UDOO(upper) (ubuntu 14.04)**
+
+ssh: udooer@192.168.0.199 
+
+IP: 192.168.0.199
+
+**UDOO(lower) (ubuntu 16.04) (接arduino)**
+
+ssh: udooer@192.168.0.197 
+
+IP: 192.168.0.197
+
+#### ROS Run Step
+1. 馬達插電 
+2. 開啟馬達 
+3. 控制port接至main UDOO 
+4. run roslauch all_in_one / roscore + rosrun Motor_node 
+5. run Manual_node / <Your_ROS_node> 
+
+#### Reference
+https://hackmd.io/tS2iw894RXyzcXyv0G4J7A?both
