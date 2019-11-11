@@ -12,7 +12,8 @@
 #endif
 
 #include "Viewer.h"
-#include "robot_control.h"
+//#include "robot_control.h"
+#include "robot_control_turtlebot.h"
 #include "OpenNI.h"
 #include "NiTE.h"
 
@@ -149,7 +150,7 @@ void EoyViewer::Finalize()
 
 void rosInit(int argc, char** argv){
 	rosInit(argc, argv, "newrobot");
-	armUp();
+	//armUp();
 	cout << "Successfully connect to the Robot";
 }
 
@@ -157,8 +158,8 @@ void rosInit(int argc, char** argv){
 void rosFinalize() {
 	stopMotion();
 
-	if (g_robotArmMode)
-		armDown();
+	//if (g_robotArmMode)
+	//	armDown();
 
 	cout << "Stop connect to the Robot";
 }
@@ -670,13 +671,13 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot in Z-Dim
 		else if (coordinates[2] > thresholdMaxZ  && LastMovingAction != 1) {
 			LastMovingAction = 1;
-			setSpeed(RobotVelocity, RobotVelocity);
+			//setSpeed(RobotVelocity, RobotVelocity);
 			goForward();
 		}
 		//host cloesd to iRobot in Z-Dim
 		else if (coordinates[2] < thresholdMinZ  && LastMovingAction != 2) {
 			LastMovingAction = 2;
-			setSpeed(RobotVelocity, RobotVelocity);
+			//setSpeed(RobotVelocity, RobotVelocity);
 			goBack();
 		}
 	}
@@ -684,7 +685,7 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	else if (coordinates[0] < thresholdMinX) {
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 5) {
 				LastMovingAction = 5;
-				setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+				//setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 				spinRight();		
 				//cout << "spin right!!!!" <<endl;
 			
@@ -692,7 +693,8 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 		//host far away from iRobot (turn right)
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 3) {
 			LastMovingAction = 3;
-			turnLeftRight(RobotVelocity + RobotVelocity *0.25, RobotVelocity-SPEED_WHEEL_DIFF);
+			//turnLeftRight(RobotVelocity + RobotVelocity *0.25, RobotVelocity-SPEED_WHEEL_DIFF);
+			turnLeftRight(false);
 			//cout << "turn right!!" <<endl;
 		}
 	}
@@ -700,13 +702,14 @@ void RunRobotTracking(nite::UserTracker* pUserTracker, const nite::UserData& use
 	else if (coordinates[0] > thresholdMaxX) {
 		if (coordinates[2] <= thresholdMaxZ && LastMovingAction != 6) {
 				LastMovingAction = 6;
-				setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+				//setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 				spinLeft();
 			}
 		
 		else if (coordinates[2] > thresholdMaxZ && LastMovingAction != 4) {
 			LastMovingAction = 4;
-			turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.25);
+			//turnLeftRight(RobotVelocity - SPEED_WHEEL_DIFF, RobotVelocity + RobotVelocity *0.25);
+			turnLeftRight(left);
 		}
 	}
 }
@@ -1115,6 +1118,8 @@ void EoyViewer::Display()
 	// Read result.csv to tag profile on top of the head
 	 GetResultOfPID();
 
+        bool trackingTargetLost = true;
+
 	for (int i = 0; i < users.getSize(); ++i)
 	{
 		const nite::UserData& user = users[i];
@@ -1175,6 +1180,7 @@ void EoyViewer::Display()
 			// 	RunRobotTracking(m_pUserTracker, user);
 			// } //&& (user.getId() == i_FollowingTarget)
 			if (g_runRobotTracking && (userTrackerFrame.getFrameIndex() % 3 == 0 && (user.getId() == i_FollowingTarget))  ) { // if (g_runRobotTracking) 
+				trackingTargetLost = false;
 				RunRobotTracking(m_pUserTracker, user);
 			}
 
@@ -1229,6 +1235,11 @@ void EoyViewer::Display()
 			}
 		}
 	}
+	if (g_runRobotTracking && userTrackerFrame.getFrameIndex() % 3 == 0 && trackingTargetLost)
+	{
+		StopRobotTracking_2();
+	} 
+
 	confidenceOfResult = -1;
 	// Screen Visualization
 	if (g_drawFrameId)
@@ -1318,43 +1329,47 @@ void EoyViewer::OnKey(unsigned char key, int /*x*/, int /*y*/)
 		break;
 	// Robot control keyword
 	case 'u': // armup and arm down
+		/*
 		(g_robotArmMode)? armDown(): armUp();
 		g_robotArmMode = !g_robotArmMode;
 		if (g_robotArmMode) 
 			printf ("Arm Up");
 		else
 			cout << "Arm Down";
+		*/
 		break;
 	case 32 : // stop robot
 		stopMotion();
 		break;
 	case 'w':
 		if (!g_runRobotTracking) 
-			setSpeed(SPEED_LIMIT, SPEED_LIMIT);
+			//setSpeed(SPEED_LIMIT, SPEED_LIMIT);
 			goForward();
 		break;
 	case 's':
 		if (!g_runRobotTracking) 
-			setSpeed(SPEED_LIMIT, SPEED_LIMIT);
+			//setSpeed(SPEED_LIMIT, SPEED_LIMIT);
 			goBack();
 		break;
 	case 'a':
 		if (!g_runRobotTracking) 
-			setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+			//setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 			spinLeft();
 		break;
 	case 'd':
 		if (!g_runRobotTracking) 
-			setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
+			//setSpeed(ROTATE_LIMIT, ROTATE_LIMIT);
 			spinRight();
 		break;
 	case 'q':
 		if (!g_runRobotTracking) 
-			turnLeftRight(SPEED_LIMIT - SPEED_WHEEL_DIFF, SPEED_LIMIT);
+			//turnLeftRight(SPEED_LIMIT - SPEED_WHEEL_DIFF, SPEED_LIMIT);
+			turnLeftRight(true);
 		break;
 	case 'e':
 		if (!g_runRobotTracking)
-			turnLeftRight(SPEED_LIMIT, SPEED_LIMIT - SPEED_WHEEL_DIFF);
+			//turnLeftRight(SPEED_LIMIT, SPEED_LIMIT - SPEED_WHEEL_DIFF);
+			turnLeftRight(false);
 		break;
 
 	}
